@@ -19,7 +19,8 @@ public class Program
             bool exit = false; // Variabile che gestisce il menu di registrazione e login
             while (!exit)
             {
-                Console.WriteLine("\nMenÃ¹");
+                Console.WriteLine("\nMenù");
+              
                 Console.WriteLine("[1] Registrazione");
                 Console.WriteLine("[2] Login");
                 Console.WriteLine("[0] Esci");
