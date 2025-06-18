@@ -1,6 +1,5 @@
 using System;
 using MySql.Data.MySqlClient;
-using MySqlX.XDevAPI.Relational;
 
 class Carta
 {
