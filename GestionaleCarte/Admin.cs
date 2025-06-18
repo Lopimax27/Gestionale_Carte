@@ -14,5 +14,4 @@ public sealed class Admin
         get { return _password; }
     }
 
-
 }
