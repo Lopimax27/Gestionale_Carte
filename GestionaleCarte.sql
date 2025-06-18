@@ -13,9 +13,9 @@ CREATE TABLE Collezione(
 id_collezione INT PRIMARY KEY AUTO_INCREMENT,
 nome_collezione varchar(100) NOT NULL,
 id_utente INT unique,
-id_carta INT,
+id_album INT,
 FOREIGN KEY (id_utente) REFERENCES utente(id_utente),
-FOREIGN KEY (id_carta) REFERENCES carta(id_carta)
+FOREIGN KEY (id_album) REFERENCES album(id_album)
 );
 
 CREATE TABLE Carta(
@@ -39,10 +39,29 @@ anno_espansione DATE
 CREATE TABLE Album(
 id_album INT PRIMARY KEY AUTO_INCREMENT,
 nome_album varchar(100) not null,
-id_collezione INT,
 id_carta INT,
-is_obtained BOOL DEFAULT FALSE,
-is_wanted BOOL DEFAULT FALSE,
-FOREIGN KEY (id_collezione) REFERENCES collezione(id_collezione),
+is_obtained BOOLEAN DEFAULT FALSE,
+is_wanted BOOLEAN DEFAULT FALSE,
 FOREIGN KEY (id_carta) REFERENCES carta(id_carta)
 );
+
+INSERT INTO Carta (nome_pokemon, tipo, rarita, prezzo, url_img, is_reverse, id_espansione) VALUES
+('Ivysaur', 'Erba', 'Rara-Holo',22.01, 'https://images.pokemontcg.io/si1/5_hires.png', FALSE, 1),
+('Lickitung', 'Normale', 'Non Comune', 14.89, 'https://images.pokemontcg.io/si1/16_hires.png', FALSE, 1),
+('Exeggutor', 'Erba', 'Non Comune', 16.63, 'https://images.pokemontcg.io/si1/13_hires.png', FALSE, 1),
+('Vileplume', 'Erba', 'Rara-Holo', 27.99, 'https://images.pokemontcg.io/si1/17_hires.png', FALSE, 1),
+('Marill', 'Acqua', 'Comune', 25.06, 'https://images.pokemontcg.io/si1/11_hires.png', FALSE, 1),
+('Lapras', 'Acqua', 'Rara-Holo', 23.32, 'https://images.pokemontcg.io/si1/12_hires.png', FALSE, 1),
+('Jigglypuff', 'Normale', 'Comune', 21.32, 'https://images.pokemontcg.io/si1/8_hires.png', FALSE, 1),
+('Butterfree', 'Erba', 'Non Comune', 18.64, 'https://images.pokemontcg.io/si1/9_hires.png', FALSE, 1),
+('Pidgeot', 'Normale', 'Rara-Holo', 19.91, 'https://images.pokemontcg.io/si1/2_hires.png', FALSE, 1),
+('Onix', 'Lotta', 'Comune', 22.28, 'https://images.pokemontcg.io/si1/3_hires.png', FALSE, 1),
+('Mew', 'Psico', 'Rara-Holo', 145.50, 'https://images.pokemontcg.io/si1/1_hires.png', FALSE, 1),
+('Togepi', 'Normale', 'Comune', 31.28, 'https://images.pokemontcg.io/si1/4_hires.png', FALSE, 1),
+('Ledyba', 'Erba', 'Comune', 18.49, 'https://images.pokemontcg.io/si1/7_hires.png', FALSE, 1),
+('Slowking', 'Psico', 'Rara-Holo', 30.60, 'https://images.pokemontcg.io/si1/14_hires.png', FALSE, 1);
+
+INSERT INTO Espansione (nome_espansione, anno_espansione)
+VALUES ("Southern Island", '2001-07-01');
+
+Select*from Carta;
