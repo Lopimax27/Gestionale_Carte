@@ -20,6 +20,7 @@ public class Program
             while (!exit)
             {
                 Console.WriteLine("\nMenù");
+              
                 Console.WriteLine("[1] Registrazione");
                 Console.WriteLine("[2] Login");
                 Console.WriteLine("[0] Esci");
