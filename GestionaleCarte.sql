@@ -39,11 +39,19 @@ anno_espansione DATE
 CREATE TABLE Album(
 id_album INT PRIMARY KEY AUTO_INCREMENT,
 nome_album varchar(100) not null,
-id_carta INT,
-is_obtained BOOLEAN DEFAULT FALSE,
-is_wanted BOOLEAN DEFAULT FALSE,
-FOREIGN KEY (id_carta) REFERENCES carta(id_carta)
+id_collezione INT,
+FOREIGN KEY (id_collezione) REFERENCES Collezione(id_collezione)
 );
+
+CREATE TABLE Album_Carta(
+id_album carta int primary key auto_increment,
+id_album,
+id_carta,
+is_obtained bool default false,
+is_wanted bool default false,
+foreign key (id_album) references Album(id_album),
+foreign key (id_carta) references Carta(id_carta) 
+)
 
 INSERT INTO Carta (nome_pokemon, tipo, rarita, prezzo, url_img, is_reverse, id_espansione) VALUES
 ('Ivysaur', 'Erba', 'Rara-Holo',22.01, 'https://images.pokemontcg.io/si1/5_hires.png', FALSE, 1),
