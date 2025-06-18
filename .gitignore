@@ -1,0 +1,40 @@
+# Build results
+bin/
+obj/
+*.exe
+*.dll
+*.pdb
+
+# Visual Studio / Rider
+.vs/
+.vscode/
+.idea/
+*.user
+*.suo
+*.cache
+*.log
+
+# Database & Connection Strings
+*.mdf
+*.ldf
+appsettings.json
+appsettings.*.json
+connectionstrings.json
+
+# Packages
+packages/
+*.nupkg
+
+# OS generated files
+.DS_Store
+Thumbs.db
+*.tmp
+*.temp
+
+# Personal IDE settings
+launchSettings.json
+
+# Backup files
+*.bak
+*.backup
+*~
