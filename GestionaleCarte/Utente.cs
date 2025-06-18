@@ -1,37 +1,14 @@
 using MySql.Data.MySqlClient;
+
 public class Utente
 {
-    public string Username { get; set; }
-    public string Email { get; set; }
-    public string Password { get; set; }
-    public Collezione CollezioneUtente { get; set; }
+    private MySqlConnection _connection;
+    private int _utenteId;
 
-    public Utente(string username, string email, string password)
+    public Utente(MySqlConnection connection, int utenteId)
     {
-        Username = username;
-        Email = email;
-        Password = password;
-        CollezioneUtente = new Collezione();
+        _connection = connection;
+        _utenteId = utenteId;
     }
-
-    public void VisualizzaCollezione()
-    {
-        CollezioneUtente.Visualizza();
-    }
-
-    public void CreaAlbum(string nomeAlbum)
-    {
-        CollezioneUtente.AggiungiAlbum(new Album(nomeAlbum));
-    }
-
-    public void EliminaAlbum(string nomeAlbum)
-    {
-        CollezioneUtente.RimuoviAlbum(nomeAlbum);
-    }
-
-    public void MostraAlbum(string nomeAlbum)
-    {
-        CollezioneUtente.MostraAlbum(nomeAlbum);
-    }
+    
 }
-
