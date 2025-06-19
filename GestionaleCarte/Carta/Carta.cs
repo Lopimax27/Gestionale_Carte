@@ -28,7 +28,7 @@ class Carta
         Rara_Segreta
     }
 
-    public void AggiungiCarta(MySqlConnection conn)
+    public void AggiungiCartaDB(MySqlConnection conn)
     {
         Console.Write($"Inserisci il nome della carta: ");
         string nomeCarta = Console.ReadLine();
@@ -119,7 +119,7 @@ class Carta
     }
 
 
-    public void RimuoviCarta(MySqlConnection conn)
+    public void RimuoviCartaDB(MySqlConnection conn)
     {
         Console.Write("Inserisci nome: ");
         string nomeCarta = Console.ReadLine();
@@ -132,12 +132,12 @@ class Carta
             string sqlEspansione = "Select espansione.id_espansione from espansione where espansione.nome_espansione=@espansione;";
             using var cmdEspansione = new MySqlCommand(sqlEspansione, conn);
             cmdEspansione.Parameters.AddWithValue("@espansione", espansioneCarta);
-            using var rdr = cmdEspansione.ExecuteReader();
+            using var rdr2 = cmdEspansione.ExecuteReader();
 
-            if (rdr.Read())
+            if (rdr2.Read())
             {
-                espansioneID = (int)rdr[0];
-                rdr.Close();
+                espansioneID = (int)rdr2[0];
+                rdr2.Close();
                 break;
             }
             else
@@ -146,6 +146,8 @@ class Carta
                 return;
             }
         } while (true);
+
+
 
         string sql = "select carta.id_carta from carta where nome_pokemon = @nome and id_espansione = @id_espansione;";
         using var cmd = new MySqlCommand(sql, conn);
@@ -168,7 +170,6 @@ class Carta
             cmd.ExecuteNonQuery();
             Console.WriteLine($"Carta {nomeCarta}, {espansioneCarta} elimnata.");
         }
-
     }
 
 
