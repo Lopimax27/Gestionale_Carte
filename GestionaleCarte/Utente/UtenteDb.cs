@@ -27,6 +27,7 @@ public class UtenteDb : IUtenteDb
         {
             return false;
         }
+        
     }
 
     public bool Inserisci(string username, string email, string passwordHash)
