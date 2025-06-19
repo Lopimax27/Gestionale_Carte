@@ -13,7 +13,6 @@ CREATE TABLE Collezione(
 id_collezione INT PRIMARY KEY AUTO_INCREMENT,
 nome_collezione varchar(100) NOT NULL,
 id_utente INT unique,
-id_album INT,
 FOREIGN KEY (id_utente) REFERENCES utente(id_utente)
 );
 
