@@ -1,3 +1,5 @@
+using MySql.Data.MySqlClient;
+
 public class ServiziCollezione
 {
     private readonly ICollezioneDb _collezioneDb;
@@ -9,15 +11,14 @@ public class ServiziCollezione
         _serviziAlbum = serviziAlbum;
     }
 
-    public Collezione OttieniCreaCollezione(int utenteId)
+    public Collezione OttieniCreaCollezione(int utenteId,string nomeCollezione)
     {
         var collezione = _collezioneDb.TrovaPerUtenteId(utenteId);
         if (collezione == null)
         {
-            _collezioneDb.CreaCollezione(utenteId);
+            _collezioneDb.CreaCollezione(utenteId,nomeCollezione);
             collezione = _collezioneDb.TrovaPerUtenteId(utenteId)!;//Punto esclamativo dice fidati capo non è nullo
         }
         return collezione;
     }
-
 }

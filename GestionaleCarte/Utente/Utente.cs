@@ -18,7 +18,7 @@ public class Utente
 
         string query = @"INSERT INTO album (nome_album) VALUES (@nomeAlbum)";
         MySqlCommand cmdAddAlbum = new MySqlCommand(query, conn);
-        cmdAddAlbum.Parameters.AddWithValue("@nome_album", nomeAlbum);
+        cmdAddAlbum.Parameters.AddWithValue("@nomeAlbum", nomeAlbum);
         cmdAddAlbum.ExecuteNonQuery();
     }
 
@@ -92,7 +92,7 @@ public class Utente
                         WHERE c.id_utente = @idUtente";
 
         MySqlCommand cmdMostra = new MySqlCommand(queryMostra, conn);
-        cmdMostra.Parameters.AddWithValue("@id_utente", idUtente);
+        cmdMostra.Parameters.AddWithValue("@idUtente", idUtente);
 
         MySqlDataReader rdrMostra = cmdMostra.ExecuteReader();
 

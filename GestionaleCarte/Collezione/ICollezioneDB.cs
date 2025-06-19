@@ -1,5 +1,5 @@
 public interface ICollezioneDb
 {
     Collezione? TrovaPerUtenteId(int UtenteId);
-    bool CreaCollezione(int utenteId);
+    bool CreaCollezione(int utenteId,string nomeCollezione);
 }

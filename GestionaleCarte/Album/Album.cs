@@ -1,10 +1,15 @@
-using System;
 using MySql.Data.MySqlClient;
 
 public class Album
 {
     // Stringa di connessione al database MySQL
-    private string connectionString = "server=localhost;user=root;database=GestionaleCarte;password=1234;";
+    public MySqlConnection Connection { get; private set; }
+
+    public Album(MySqlConnection conn)
+    {
+        Connection = conn;
+    }
+
 
     public void AggiungiCarta()
     {
@@ -32,14 +37,14 @@ public class Album
                 return;
             }
 
-            using (var conn = new MySqlConnection(connectionString))
+            
             {
-                conn.Open();
+                Connection.Open();
 
                 // Trova id_carta corrispondente
                 string queryCarta = "SELECT id_carta FROM Carta WHERE nome_pokemon = @nome_pokemon AND id_espansione = @id_espansione LIMIT 1";
                 int? idCarta = null;
-                using (var cmd = new MySqlCommand(queryCarta, conn))
+                using (var cmd = new MySqlCommand(queryCarta, Connection))
                 {
                     cmd.Parameters.AddWithValue("@nome_pokemon", nomePokemon);
                     cmd.Parameters.AddWithValue("@id_espansione", idEspansione);
@@ -56,7 +61,7 @@ public class Album
 
                 // Controlla se la carta è già nell'album
                 string queryAlbumCarta = "SELECT COUNT(*) FROM Album_Carta WHERE id_album = @id_album AND id_carta = @id_carta";
-                using (var cmd = new MySqlCommand(queryAlbumCarta, conn))
+                using (var cmd = new MySqlCommand(queryAlbumCarta, Connection))
                 {
                     cmd.Parameters.AddWithValue("@id_album", idAlbum);
                     cmd.Parameters.AddWithValue("@id_carta", idCarta.Value);
@@ -80,7 +85,7 @@ public class Album
                         try
                         {
                             string insertQuery = "INSERT INTO Album_Carta (id_album, id_carta, is_obtained, is_wanted) VALUES (@id_album, @id_carta, TRUE, FALSE)";
-                            using (var cmd = new MySqlCommand(insertQuery, conn))
+                            using (var cmd = new MySqlCommand(insertQuery, Connection))
                             {
                                 cmd.Parameters.AddWithValue("@id_album", idAlbum);
                                 cmd.Parameters.AddWithValue("@id_carta", idCarta.Value);
@@ -135,14 +140,14 @@ public class Album
                 return;
             }
 
-            using (var conn = new MySqlConnection(connectionString))
+
             {
-                conn.Open();
+                Connection.Open();
 
                 // Trova id_carta corrispondente
                 string queryCarta = "SELECT id_carta FROM Carta WHERE nome_pokemon = @nome_pokemon AND id_espansione = @id_espansione LIMIT 1";
                 int? idCarta = null;
-                using (var cmd = new MySqlCommand(queryCarta, conn))
+                using (var cmd = new MySqlCommand(queryCarta, Connection))
                 {
                     cmd.Parameters.AddWithValue("@nome_pokemon", nomePokemon);
                     cmd.Parameters.AddWithValue("@id_espansione", idEspansione);
@@ -159,7 +164,7 @@ public class Album
 
                 // Verifica se la carta è presente nell'album
                 string queryAlbumCarta = "SELECT COUNT(*) FROM Album_Carta WHERE id_album = @id_album AND id_carta = @id_carta";
-                using (var cmd = new MySqlCommand(queryAlbumCarta, conn))
+                using (var cmd = new MySqlCommand(queryAlbumCarta, Connection))
                 {
                     cmd.Parameters.AddWithValue("@id_album", idAlbum);
                     cmd.Parameters.AddWithValue("@id_carta", idCarta.Value);
@@ -183,7 +188,7 @@ public class Album
                         try
                         {
                             string deleteQuery = "DELETE FROM Album_Carta WHERE id_album = @id_album AND id_carta = @id_carta LIMIT 1";
-                            using (var cmd = new MySqlCommand(deleteQuery, conn))
+                            using (var cmd = new MySqlCommand(deleteQuery, Connection))
                             {
                                 cmd.Parameters.AddWithValue("@id_album", idAlbum);
                                 cmd.Parameters.AddWithValue("@id_carta", idCarta.Value);

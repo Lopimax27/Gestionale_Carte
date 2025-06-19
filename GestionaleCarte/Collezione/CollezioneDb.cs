@@ -23,13 +23,14 @@ public class CollezioneDb : ICollezioneDb
         return null;
     }
 
-    public bool CreaCollezione(int utenteId)
+    public bool CreaCollezione(int utenteId,string nomeCollezione)
     {
         try
         {
-            string sqlInsert = "Insert into Collezione (id_utente) values (@utenteId)";
+            string sqlInsert = "Insert into Collezione (id_utente,nome_collezione) values (@utenteId,@nomeCollezione)";
             using var cmd = new MySqlCommand(sqlInsert, connection);
             cmd.Parameters.AddWithValue("@utenteId", utenteId);
+            cmd.Parameters.AddWithValue("@nomeCollezione", nomeCollezione);
             cmd.ExecuteNonQuery();
             return true;
         }
