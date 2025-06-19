@@ -1,4 +1,4 @@
-public class AlbumDb:IAlbumId
+public class AlbumDb:IAlbumDb
 {
     
 }

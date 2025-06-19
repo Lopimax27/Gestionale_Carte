@@ -4,13 +4,15 @@ public class Utente
 {
     public int UtenteId { get; private set; }
     public MySqlConnection Connection { get; private set; }
-
+    public Collezione collezione { get; private set; }
+    
     public Utente(MySqlConnection conn, int id)
     {
         Connection = conn;
         UtenteId = id;
     }
-    
+
+
     public void CreaAlbum(MySqlConnection conn)
     {
         Console.WriteLine("Inserisci il nome dell'album: ");

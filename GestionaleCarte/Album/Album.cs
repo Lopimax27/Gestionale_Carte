@@ -39,7 +39,6 @@ public class Album
 
             
             {
-                Connection.Open();
 
                 // Trova id_carta corrispondente
                 string queryCarta = "SELECT id_carta FROM Carta WHERE nome_pokemon = @nome_pokemon AND id_espansione = @id_espansione LIMIT 1";
@@ -142,7 +141,6 @@ public class Album
 
 
             {
-                Connection.Open();
 
                 // Trova id_carta corrispondente
                 string queryCarta = "SELECT id_carta FROM Carta WHERE nome_pokemon = @nome_pokemon AND id_espansione = @id_espansione LIMIT 1";
