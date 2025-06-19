@@ -48,7 +48,6 @@ public class ServiziCarta
             }
             else
             {
-                // TODO: da testare
                 Console.WriteLine($"Espansione non valida. Inserisci un espansione valida.");
                 return;
             }
@@ -133,7 +132,7 @@ public class ServiziCarta
             }
             else
             {
-                // TODO: da testare
+                
                 Console.WriteLine($"Espansione non valida. Inserisci un espansione valida.");
                 return;
             }
@@ -147,19 +146,19 @@ public class ServiziCarta
         cmd.Parameters.AddWithValue("@id_espansione", espansioneID);
         using var rdr = cmd.ExecuteReader();
         int cartaID = 0;
-        if (rdr.Read())
+        if (!rdr.Read())
         {
             Console.WriteLine($"Carta non trovata.");
             rdr.Close();
         }
         else
         {
-            cartaID = (int)rdr[0];
+            cartaID = rdr.GetInt32("id_carta");
             rdr.Close();
             sql = "delete from carta where carta.id_carta = @carta_id limit 1";
             using var cmd2 = new MySqlCommand(sql, u.Connection);
-            cmd.Parameters.AddWithValue("@carta_id", cartaID);
-            cmd.ExecuteNonQuery();
+            cmd2.Parameters.AddWithValue("@carta_id", cartaID);
+            cmd2.ExecuteNonQuery();
             Console.WriteLine($"Carta {nomeCarta}, {espansioneCarta} elimnata.");
         }
     }

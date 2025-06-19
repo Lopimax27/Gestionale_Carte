@@ -89,10 +89,14 @@ public class Program
     {
         var eDb = new EspansioneDb(utente.Connection);
         var serviziEsp = new ServiziEspansione(eDb);
+        var serviziCarta = new ServiziCarta(utente.Connection, eDb);
 
         serviziEsp.CreaEspansioneDb(utente);
 
         serviziEsp.TrovaEspansione();
+
+        serviziCarta.AggiungiCartaDB(utente);
+        serviziCarta.RimuoviCartaDB(utente);
         
     }
 }
