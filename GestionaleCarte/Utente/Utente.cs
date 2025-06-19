@@ -5,11 +5,13 @@ public class Utente
     public int UtenteId { get; private set; }
     public MySqlConnection Connection { get; private set; }
     public Collezione collezione { get; private set; }
-    
-    public Utente(MySqlConnection conn, int id)
+    public bool IsAdmin{ get; }
+
+    public Utente(MySqlConnection conn, int id, bool isAdmin)
     {
         Connection = conn;
         UtenteId = id;
+        IsAdmin = isAdmin;
     }
 
 

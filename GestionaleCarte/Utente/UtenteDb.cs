@@ -58,9 +58,16 @@ public class UtenteDb : IUtenteDb
         if (rdr.Read())
         {
             int id = rdr.GetInt32("id_utente");
-            return new Utente(conn, id);
+            bool isAdmin = rdr.GetBoolean("is_admin");
+            if (isAdmin)
+            {
+                return new Utente(conn, id, true);
+            }
+            else
+            { 
+                return new Utente(conn, id, false);
+            }
         }
-
         return null;
     }
 }
