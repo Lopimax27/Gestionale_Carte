@@ -9,6 +9,7 @@ public class ServiziCarta
     {
         _conn = conn;
     }
+    
     public void AggiungiCartaDB()
     {
         Console.Write($"Inserisci il nome della carta: ");
