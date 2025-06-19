@@ -142,7 +142,7 @@ public class ServiziCarta
 
 
         string sql = "select carta.id_carta from carta where nome_pokemon = @nome and id_espansione = @id_espansione;";
-        using var cmd = new MySqlCommand(sql, _conn);
+        using var cmd = new MySqlCommand(sql, u.Connection);
         cmd.Parameters.AddWithValue("@nome", nomeCarta);
         cmd.Parameters.AddWithValue("@id_espansione", espansioneID);
         using var rdr = cmd.ExecuteReader();
@@ -157,7 +157,7 @@ public class ServiziCarta
             cartaID = (int)rdr[0];
             rdr.Close();
             sql = "delete from carta where carta.id_carta = @carta_id limit 1";
-            using var cmd2 = new MySqlCommand(sql, _conn);
+            using var cmd2 = new MySqlCommand(sql, u.Connection);
             cmd.Parameters.AddWithValue("@carta_id", cartaID);
             cmd.ExecuteNonQuery();
             Console.WriteLine($"Carta {nomeCarta}, {espansioneCarta} elimnata.");
