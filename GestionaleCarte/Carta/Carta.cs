@@ -10,11 +10,11 @@ class Carta
         Erba,
         Elettro,
         Psico,
-        Lotta, 
+        Lotta,
         Buio,
         Metallo,
-        Normale, 
-        Folletto, 
+        Normale,
+        Folletto,
         Drago
     }
 
@@ -28,7 +28,7 @@ class Carta
         Rara_Segreta
     }
 
-    public void AggiungiCarta(MySqlConnection conn)
+    public void AggiungiCartaDB(MySqlConnection conn)
     {
         Console.Write($"Inserisci il nome della carta: ");
         string nomeCarta = Console.ReadLine();
@@ -48,9 +48,9 @@ class Carta
         do
         {
             string sqlEspansione = "Select espansione.id_espansione from espansione where espansione.nome_espansione=@espansione;";
-            MySqlCommand cmdEspansione = new MySqlCommand(sqlEspansione, conn);
+            using var cmdEspansione = new MySqlCommand(sqlEspansione, conn);
             cmdEspansione.Parameters.AddWithValue("@espansione", espansioneCarta);
-            MySqlDataReader rdr = cmdEspansione.ExecuteReader();
+            using var rdr = cmdEspansione.ExecuteReader();
 
             if (rdr.Read())
             {
@@ -107,7 +107,7 @@ class Carta
 
 
         string sqlAddCarta = "insert into carta(nome_pokemon, tipo, rarita, prezzo, url_img, is_reverse, id_espansione) values (@nome_pokemon, @tipo, @rarita, @prezzo, @url_img, @is_reverse, @id_espansione)";
-        MySqlCommand cmdAddCarta = new MySqlCommand(sqlAddCarta, conn);
+        using var cmdAddCarta = new MySqlCommand(sqlAddCarta, conn);
         cmdAddCarta.Parameters.AddWithValue("@nome_pokemon", nomeCarta);
         cmdAddCarta.Parameters.AddWithValue("@tipo", tipoCarta + 1);
         cmdAddCarta.Parameters.AddWithValue("@rarita", raritaCarta + 1);
@@ -117,4 +117,60 @@ class Carta
         cmdAddCarta.Parameters.AddWithValue("@id_espansione", espansioneID);
         cmdAddCarta.ExecuteNonQuery();
     }
+
+
+    public void RimuoviCartaDB(MySqlConnection conn)
+    {
+        Console.Write("Inserisci nome: ");
+        string nomeCarta = Console.ReadLine();
+
+        Console.Write($"Inserisci l'espansione della carta: ");
+        string espansioneCarta = Console.ReadLine();
+        int espansioneID = 0;
+        do
+        {
+            string sqlEspansione = "Select espansione.id_espansione from espansione where espansione.nome_espansione=@espansione;";
+            using var cmdEspansione = new MySqlCommand(sqlEspansione, conn);
+            cmdEspansione.Parameters.AddWithValue("@espansione", espansioneCarta);
+            using var rdr2 = cmdEspansione.ExecuteReader();
+
+            if (rdr2.Read())
+            {
+                espansioneID = (int)rdr2[0];
+                rdr2.Close();
+                break;
+            }
+            else
+            {
+                Console.WriteLine($"Espansione non valida. Inserisci un espansione valida.");
+                return;
+            }
+        } while (true);
+
+
+
+        string sql = "select carta.id_carta from carta where nome_pokemon = @nome and id_espansione = @id_espansione;";
+        using var cmd = new MySqlCommand(sql, conn);
+        cmd.Parameters.AddWithValue("@nome", nomeCarta);
+        cmd.Parameters.AddWithValue("@id_espansione", espansioneID);
+        using var rdr = cmd.ExecuteReader();
+        int cartaID = 0;
+        if (rdr.Read())
+        {
+            Console.WriteLine($"Carta non trovata.");
+            rdr.Close();
+        }
+        else
+        {
+            cartaID = (int)rdr[0];
+            rdr.Close();
+            sql = "delete from carta where carta.id_carta = @carta_id limit 1";
+            using var cmd2 = new MySqlCommand(sql, conn);
+            cmd.Parameters.AddWithValue("@carta_id", cartaID);
+            cmd.ExecuteNonQuery();
+            Console.WriteLine($"Carta {nomeCarta}, {espansioneCarta} elimnata.");
+        }
+    }
+
+
 }
