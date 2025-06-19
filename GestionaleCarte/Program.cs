@@ -4,6 +4,8 @@ using System.Data;
 using MySql.Data;
 using MySql.Data.MySqlClient;
 
+using BCrypt.Net;
+
 public class Program
 {
     public static void Main()
@@ -62,7 +64,6 @@ public class Program
                             Console.WriteLine("Login fallito!");
                             continue;
                         }
-
                         Console.WriteLine("Login effettuato, Benvenuto!");
 
                         MenuUtente(utente);
@@ -84,21 +85,7 @@ public class Program
         conn.Close();
     }
 
-
-    public static bool AdminLogin(Admin admin, string username, string password)
-    {
-        if (username == admin.Username && password == admin.Password)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
-
     public static void MenuUtente(Utente utente)
-    { 
-
+    {
     }
 }
