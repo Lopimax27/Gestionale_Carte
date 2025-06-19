@@ -87,5 +87,7 @@ public class Program
 
     public static void MenuUtente(Utente utente)
     {
+        utente.CreaAlbum(utente.Connection);
+        
     }
 }
