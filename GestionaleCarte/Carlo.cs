@@ -1,27 +1,28 @@
 using MySql.Data.MySqlClient;
 
-public class UtenteProva {
-    public void CreaCollezione(MySqlConnection conn, string nomeCollezione, int idUtente)
+public class UtenteProva
 {
-
-    string query = "INSERT INTO Collezione (nome_collezione, id_utente) VALUES (@nomeCollezione, @idUtente )";
-
-    try
+    public void CreaCollezione(MySqlConnection conn, string nomeCollezione, int idUtente)
     {
-        MySqlCommand cmdCreaColl = new MySqlCommand(query, conn);
 
-        cmdCreaColl.Parameters.AddWithValue("@nomeCollezione", nomeCollezione);
-        cmdCreaColl.Parameters.AddWithValue("@idUtente", idUtente);
+        string query = "INSERT INTO Collezione (nome_collezione, id_utente) VALUES (@nomeCollezione, @idUtente )";
 
-        cmdCreaColl.ExecuteNonQuery();
+        try
+        {
+            MySqlCommand cmdCreaColl = new MySqlCommand(query, conn);
 
-        Console.WriteLine("Creazione della collezione avvenuta con successo");
+            cmdCreaColl.Parameters.AddWithValue("@nomeCollezione", nomeCollezione);
+            cmdCreaColl.Parameters.AddWithValue("@idUtente", idUtente);
+
+            cmdCreaColl.ExecuteNonQuery();
+
+            Console.WriteLine("Creazione della collezione avvenuta con successo");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("Errore durante la creazione della collezione" + ex.Message);
+        }
     }
-    catch (Exception ex)
-    {
-        Console.WriteLine("Errore durante la creazione della collezione" + ex.Message);
-    }
-}
 
     public void VisualizzaCollezione(MySqlConnection conn, int idCollezione)
     {
@@ -52,5 +53,51 @@ public class UtenteProva {
             Console.WriteLine("Errore durante la visualizzazione degli album" + ex.Message);
         }
     }
+
+    public void VisualizzaCarte(MySqlConnection conn, int idAlbum)
+    {
+        string query = @"SELECT
+                        c.nome_pokemon,
+                        c.tipo,
+                        c.rarita,
+                        c.prezzo,
+                        c.is_reverse,
+                        ac.is_obtained,
+                        ac.is_wanted
+                        FROM album_carta ac
+                        JOIN carta c ON ac.id_carta = c.id_carta
+                        WHERE ac.id_album = @idAlbum";
+
+        try
+        {
+            MySqlCommand cmdVisualCarte = new MySqlCommand(query, conn);
+            cmdVisualCarte.Parameters.AddWithValue("@idAlbum", idAlbum);
+
+            MySqlDataReader rdrVisual = cmdVisualCarte.ExecuteReader();
+            if (rdrVisual.HasRows)
+            {
+                Console.WriteLine("Ecco tutte le carte dell'album selezionato");
+
+                while (rdrVisual.Read())
+                {
+                    string nome = rdrVisual.GetString("nome_pokemon");
+                    string tipo = rdrVisual.GetString("tipo");
+                    string rarita = rdrVisual.GetString("rarita");
+                    decimal prezzo = rdrVisual.GetDecimal("prezzo");
+                    bool isReverse = rdrVisual.GetBoolean("is_reverse");
+                    bool isObtained = rdrVisual.GetBoolean("is_obtained");
+                    bool isWanted = rdrVisual.GetBoolean("is_wanted");
+
+                    Console.WriteLine($"Nome: {nome} | Tipo: {tipo} | Rarità: {rarita} | Prezzo: €{prezzo} | Reverse: {(isReverse ? "✔" : "✘")} | Posseduta: {(isObtained ? "✔" : "✘")} | Desiderata: {(isWanted ? "✔" : "✘")}");
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("Errore durante la visualizzazione delle carte" + ex.Message);
+        }
+
+    }
+
 }
 
