@@ -36,7 +36,7 @@ public class ServiziEspansione
         Console.Write("Inserisci il nome dell'espansione: ");
         string nome = Console.ReadLine()?.Trim();
 
-        Console.Write("Inserisci anno di uscita (fromato yyyy-mm-gg): ");
+        Console.Write("Inserisci anno di uscita (formato yyyy-mm-gg): ");
         if (!DateTime.TryParse(Console.ReadLine(), out DateTime anno))
         {
             Console.Write("Data non valida");

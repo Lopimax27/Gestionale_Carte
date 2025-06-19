@@ -51,20 +51,22 @@ public class UtenteDb : IUtenteDb
 
     public Utente? TrovaPerUsername(string username)
     {
-        string sqlFind = "Select id_utente from Utente where username=@username";
+        string sqlFind = "Select id_utente,is_admin from Utente where username=@username";
         using var cmd = new MySqlCommand(sqlFind, conn);
+        cmd.Parameters.AddWithValue("@username", username);
         using var rdr = cmd.ExecuteReader();
 
         if (rdr.Read())
         {
             int id = rdr.GetInt32("id_utente");
             bool isAdmin = rdr.GetBoolean("is_admin");
+            
             if (isAdmin)
             {
                 return new Utente(conn, id, true);
             }
             else
-            { 
+            {
                 return new Utente(conn, id, false);
             }
         }

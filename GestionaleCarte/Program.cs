@@ -87,7 +87,12 @@ public class Program
 
     public static void MenuUtente(Utente utente)
     {
-        utente.CreaAlbum(utente.Connection);
+        var eDb = new EspansioneDb(utente.Connection);
+        var serviziEsp = new ServiziEspansione(eDb);
+
+        serviziEsp.CreaEspansioneDb(utente);
+
+        serviziEsp.TrovaEspansione();
         
     }
 }

@@ -34,6 +34,8 @@ public class ServiziUtente
         cmd.Parameters.AddWithValue("@utenteId", utente.UtenteId);
         using var rdr = cmd.ExecuteReader();
 
+        rdr.Read();
+
         var passwordHash = rdr.GetString("password_hash");
         if (passwordHash == null)
         {
