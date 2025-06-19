@@ -12,8 +12,8 @@ is_admin BOOL DEFAULT FALSE
 CREATE TABLE Collezione(
 id_collezione INT PRIMARY KEY AUTO_INCREMENT,
 nome_collezione varchar(100) NOT NULL,
-id_utente INT unique,
-FOREIGN KEY (id_utente) REFERENCES utente(id_utente)
+id_utente INT UNIQUE,
+FOREIGN KEY (id_utente) REFERENCES Utente(id_utente) ON DELETE CASCADE
 );
 
 CREATE TABLE Carta(
@@ -36,19 +36,19 @@ anno_espansione DATE
 
 CREATE TABLE Album(
 id_album INT PRIMARY KEY AUTO_INCREMENT,
-nome_album varchar(100) not null,
+nome_album varchar(100) NOT NULL,
 id_collezione INT,
-FOREIGN KEY (id_collezione) REFERENCES Collezione(id_collezione)
+FOREIGN KEY (id_collezione) REFERENCES Collezione(id_collezione) ON DELETE CASCADE
 );
 
 CREATE TABLE Album_Carta(
-id_album_carta int primary key auto_increment,
-id_album int,
-id_carta int,
-is_obtained bool default false,
-is_wanted bool default false,
-foreign key (id_album) references Album(id_album),
-foreign key (id_carta) references Carta(id_carta) 
+id_album_carta INT PRIMARY KEY AUTO_INCREMENT,
+id_album INT,
+id_carta INT,
+is_obtained BOOL DEFAULT FALSE,
+is_wanted BOOL DEFAULT FALSE,
+FOREIGN KEY (id_album) REFERENCES Album(id_album) ON DELETE CASCADE,
+FOREIGN KEY (id_carta) REFERENCES Carta(id_carta) ON DELETE CASCADE
 );
 
 INSERT INTO Carta (nome_pokemon, tipo, rarita, prezzo, url_img, is_reverse, id_espansione) VALUES
