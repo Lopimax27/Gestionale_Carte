@@ -14,8 +14,7 @@ id_collezione INT PRIMARY KEY AUTO_INCREMENT,
 nome_collezione varchar(100) NOT NULL,
 id_utente INT unique,
 id_album INT,
-FOREIGN KEY (id_utente) REFERENCES utente(id_utente),
-FOREIGN KEY (id_album) REFERENCES album(id_album)
+FOREIGN KEY (id_utente) REFERENCES utente(id_utente)
 );
 
 CREATE TABLE Carta(
@@ -51,7 +50,7 @@ is_obtained bool default false,
 is_wanted bool default false,
 foreign key (id_album) references Album(id_album),
 foreign key (id_carta) references Carta(id_carta) 
-)
+);
 
 INSERT INTO Carta (nome_pokemon, tipo, rarita, prezzo, url_img, is_reverse, id_espansione) VALUES
 ('Ivysaur', 'Erba', 'RaraHolo',22.01, 'https://images.pokemontcg.io/si1/5_hires.png', FALSE, 1),
