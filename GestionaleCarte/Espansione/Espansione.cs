@@ -1,3 +1,5 @@
+using System;
+
 public class Espansione
 {
     public int Id { get; set; }
