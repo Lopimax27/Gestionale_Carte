@@ -113,6 +113,13 @@ public class Album
         }
     }
 
+
+
+
+
+
+
+
     public void RimuoviCarta()
     {
         try

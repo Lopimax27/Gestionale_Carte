@@ -5,11 +5,12 @@ public class ServiziCarta
 {
     private readonly MySqlConnection _conn;
 
+    public readonly ICartaDB _cartaDB;
     private EspansioneDb _espansioneDb;
 
-    public ServiziCarta(MySqlConnection conn, EspansioneDb espansioneDb)
+    public ServiziCarta(ICartaDB cartaDB ,EspansioneDb espansioneDb)
     {
-        _conn = conn;
+        _cartaDB = cartaDB;
         _espansioneDb = espansioneDb;
     }
 
@@ -39,7 +40,7 @@ public class ServiziCarta
         int espansioneID = 0;
         do
         {
-            var e =_espansioneDb.TrovaPerNome(espansioneCarta);
+            var e = _espansioneDb.TrovaPerNome(espansioneCarta);
 
             if (e != null)
             {
@@ -93,18 +94,19 @@ public class ServiziCarta
         while (true);
 
 
+        bool cartaAggiuntaDB = _cartaDB.InserisciCarta(nomeCarta, tipoCarta, raritaCarta, prezzoCarta, isReverse, espansioneID, urlImgCarta);
 
-        string sqlAddCarta = "insert into carta(nome_pokemon, tipo, rarita, prezzo, url_img, is_reverse, id_espansione) values (@nome_pokemon, @tipo, @rarita, @prezzo, @url_img, @is_reverse, @id_espansione)";
-        using var cmdAddCarta = new MySqlCommand(sqlAddCarta, _conn);
-        cmdAddCarta.Parameters.AddWithValue("@nome_pokemon", nomeCarta);
-        cmdAddCarta.Parameters.AddWithValue("@tipo", tipoCarta + 1);
-        cmdAddCarta.Parameters.AddWithValue("@rarita", raritaCarta + 1);
-        cmdAddCarta.Parameters.AddWithValue("@prezzo", prezzoCarta);
-        cmdAddCarta.Parameters.AddWithValue("@url_img", urlImgCarta);
-        cmdAddCarta.Parameters.AddWithValue("@is_reverse", isReverse);
-        cmdAddCarta.Parameters.AddWithValue("@id_espansione", espansioneID);
-        cmdAddCarta.ExecuteNonQuery();
+        if (cartaAggiuntaDB)
+        {
+            Console.WriteLine($"Carta {nomeCarta} , {espansioneCarta} creata con successo");
+        }
+        else
+        {
+            Console.WriteLine("Errore durante la creazione della carta");
+        }
     }
+
+
 
 
     public void RimuoviCartaDB(Utente u)
@@ -123,7 +125,7 @@ public class ServiziCarta
         int espansioneID = 0;
         do
         {
-            var e =_espansioneDb.TrovaPerNome(espansioneCarta);
+            var e = _espansioneDb.TrovaPerNome(espansioneCarta);
 
             if (e != null)
             {
@@ -132,34 +134,22 @@ public class ServiziCarta
             }
             else
             {
-                
                 Console.WriteLine($"Espansione non valida. Inserisci un espansione valida.");
                 return;
             }
         } while (true);
 
 
+        var cartaDaEliminare = _cartaDB.TrovaCarta(nomeCarta, espansioneID);
+        bool cartaRimossaDB = _cartaDB.RimuoviCarta(cartaDaEliminare.Id, cartaDaEliminare.NomePokemon, espansioneCarta);
 
-        string sql = "select carta.id_carta from carta where nome_pokemon = @nome and id_espansione = @id_espansione;";
-        using var cmd = new MySqlCommand(sql, u.Connection);
-        cmd.Parameters.AddWithValue("@nome", nomeCarta);
-        cmd.Parameters.AddWithValue("@id_espansione", espansioneID);
-        using var rdr = cmd.ExecuteReader();
-        int cartaID = 0;
-        if (!rdr.Read())
+        if (cartaRimossaDB)
         {
-            Console.WriteLine($"Carta non trovata.");
-            rdr.Close();
+            Console.WriteLine($"Carta {nomeCarta} , {espansioneCarta} rimossa con successo");
         }
         else
         {
-            cartaID = rdr.GetInt32("id_carta");
-            rdr.Close();
-            sql = "delete from carta where carta.id_carta = @carta_id;";
-            using var cmd2 = new MySqlCommand(sql, u.Connection);
-            cmd2.Parameters.AddWithValue("@carta_id", cartaID);
-            cmd2.ExecuteNonQuery();
-            Console.WriteLine($"Carta {nomeCarta}, {espansioneCarta} elimnata.");
+            Console.WriteLine("Errore durante la rimozione della carta");
         }
     }
 
