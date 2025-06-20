@@ -4,13 +4,14 @@ using static Carta; // Per gli enumeratori
 public class ServiziCarta
 {
     private readonly MySqlConnection _conn;
-
     private EspansioneDb _espansioneDb;
+    private ICartaDB _cartaDb;
 
-    public ServiziCarta(MySqlConnection conn, EspansioneDb espansioneDb)
+    public ServiziCarta(MySqlConnection conn, EspansioneDb espansioneDb, ICartaDB cartaDb)
     {
         _conn = conn;
         _espansioneDb = espansioneDb;
+        _cartaDb = cartaDb;
     }
 
 
@@ -39,7 +40,7 @@ public class ServiziCarta
         int espansioneID = 0;
         do
         {
-            var e =_espansioneDb.TrovaPerNome(espansioneCarta);
+            var e = _espansioneDb.TrovaPerNome(espansioneCarta);
 
             if (e != null)
             {
@@ -106,6 +107,27 @@ public class ServiziCarta
         cmdAddCarta.ExecuteNonQuery();
     }
 
+    public void MostraCartePerEspansione()
+    {
+        Console.Write("Inserisci il nome dell'espansione: ");
+        string nomeEspansione = Console.ReadLine()?.Trim();
+
+        var carte = _cartaDb.TrovaPerEspansione(nomeEspansione);
+
+        if (carte.Count == 0)
+        {
+            Console.WriteLine("Nessuna carta trovata per questa espansione.");
+            return;
+        }
+
+        Console.WriteLine($"\nCarte trovate per l'espansione '{nomeEspansione}':\n");
+
+        foreach (var carta in carte)
+        {
+            Console.WriteLine($"ID: {carta.Id} | Nome: {carta.NomePokemon} | Tipo: {carta.TipoCarta} | Rarità: {carta.RaritaCarta} | Prezzo: €{carta.Prezzo}");
+        }
+    }
+
 
     public void RimuoviCartaDB(Utente u)
     {
@@ -123,7 +145,7 @@ public class ServiziCarta
         int espansioneID = 0;
         do
         {
-            var e =_espansioneDb.TrovaPerNome(espansioneCarta);
+            var e = _espansioneDb.TrovaPerNome(espansioneCarta);
 
             if (e != null)
             {
@@ -132,7 +154,7 @@ public class ServiziCarta
             }
             else
             {
-                
+
                 Console.WriteLine($"Espansione non valida. Inserisci un espansione valida.");
                 return;
             }
@@ -141,7 +163,7 @@ public class ServiziCarta
 
 
         string sql = "select carta.id_carta from carta where nome_pokemon = @nome and id_espansione = @id_espansione;";
-        using var cmd = new MySqlCommand(sql, u.Connection);
+        using var cmd = new MySqlCommand(sql, _conn);
         cmd.Parameters.AddWithValue("@nome", nomeCarta);
         cmd.Parameters.AddWithValue("@id_espansione", espansioneID);
         using var rdr = cmd.ExecuteReader();
@@ -156,7 +178,7 @@ public class ServiziCarta
             cartaID = rdr.GetInt32("id_carta");
             rdr.Close();
             sql = "delete from carta where carta.id_carta = @carta_id limit 1";
-            using var cmd2 = new MySqlCommand(sql, u.Connection);
+            using var cmd2 = new MySqlCommand(sql, _conn);
             cmd2.Parameters.AddWithValue("@carta_id", cartaID);
             cmd2.ExecuteNonQuery();
             Console.WriteLine($"Carta {nomeCarta}, {espansioneCarta} elimnata.");
