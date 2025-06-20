@@ -11,8 +11,7 @@ public class ServiziAlbum
         _conn = conn;
         _albumDb = albumDb;
     }
-
-
+    
     public void MostraAlbum(int idUtente)
     {
         string query = @"

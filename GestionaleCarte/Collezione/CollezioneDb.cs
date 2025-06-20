@@ -8,6 +8,49 @@ public class CollezioneDb : ICollezioneDb
         connection = conn;
     }
 
+    public bool CreaAlbum(int utenteId,int collezioneId, string nomeAlbum)
+    {
+        try
+        {
+            string sqlInsert = "Insert into Album(nome_album,id_collezione) values (@nomeAlbum,@collezioneId)";
+            using var cmd = new MySqlCommand(sqlInsert, connection);
+            cmd.Parameters.AddWithValue("@nomeAlbum", nomeAlbum);
+            cmd.Parameters.AddWithValue("@collezioneId", collezioneId);
+            cmd.ExecuteNonQuery();
+            return true;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.ToString());
+            return false;
+        }
+
+    }
+
+    public Album? TrovaPerNomeCollezioneId(int collezioneId,string nomeAlbum)
+    {
+        string sqlFind = "Select id_album,nome_album from Album where id_collezione=@collezioneId and nome_album=@nomeAlbum";
+        using var cmd = new MySqlCommand(sqlFind, connection);
+        cmd.Parameters.AddWithValue("@collezioneId", collezioneId);
+        cmd.Parameters.AddWithValue("@nomeAlbum", nomeAlbum );
+
+        using var rdr = cmd.ExecuteReader();
+
+        if (!rdr.Read())
+        {
+            return null;
+        }
+
+        int albumId = rdr.GetInt32("id_album");
+        nomeAlbum = rdr.GetString("nome_album");
+
+        return new Album
+        {
+            Id = albumId,
+            Nome = nomeAlbum
+        };
+    }
+    
     public Collezione? TrovaPerUtenteId(int utenteId)
     {
         string sqlFind = "Select id_collezione,id_utente from Collezione where id_utente=@utenteId";

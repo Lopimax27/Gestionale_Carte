@@ -65,8 +65,14 @@ public class Program
                             continue;
                         }
                         Console.WriteLine("Login effettuato, Benvenuto!");
-
-                        MenuUtente(utente);
+                        if (utente.IsAdmin)
+                        {
+                            MenuAdmin(utente);
+                        }
+                        else
+                        {
+                            MenuUtente(utente);
+                        }
                         break;
                     case 0:
                         Console.WriteLine("Arrivederci, alla prossima!");
@@ -87,10 +93,18 @@ public class Program
 
     public static void MenuUtente(Utente utente)
     {
+        var cDb = new CollezioneDb(utente.Connection);
+        var serviziColl = new ServiziCollezione(cDb);
+
+        serviziColl.CreaAlbum(utente.UtenteId);
+    }
+
+    public static void MenuAdmin(Utente utente)
+    {
         var eDb = new EspansioneDb(utente.Connection);
         var serviziEsp = new ServiziEspansione(eDb);
         var cDb = new CartaDB(utente.Connection);
-        var serviziCarta = new ServiziCarta(cDb,eDb);
+        var serviziCarta = new ServiziCarta(cDb, eDb);
 
         serviziEsp.CreaEspansioneDb(utente);
 
@@ -98,6 +112,5 @@ public class Program
 
         serviziCarta.AggiungiCartaDB(utente);
         serviziCarta.RimuoviCartaDB(utente);
-        
     }
 }

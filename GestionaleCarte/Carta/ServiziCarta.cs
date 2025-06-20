@@ -127,9 +127,6 @@ public class ServiziCarta
         }
     }
 
-
-
-
     public void RimuoviCartaDB(Utente u)
     {
         if (!u.IsAdmin)
