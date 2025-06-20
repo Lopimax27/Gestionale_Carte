@@ -4,9 +4,12 @@ public class ServiziAlbum
 {
     private readonly MySqlConnection _conn;
 
-    public ServiziAlbum(MySqlConnection conn)
+    public readonly IAlbumDb _albumDb;
+
+    public ServiziAlbum(MySqlConnection conn, IAlbumDb albumDb)
     {
         _conn = conn;
+        _albumDb = albumDb;
     }
 
     public void CreaAlbum(string nomeAlbum)
@@ -84,5 +87,6 @@ public class ServiziAlbum
             string nome = reader.GetString("nome_album");
             Console.WriteLine($"ID Album: {id} | Nome Album: {nome}");
         }
-    }
+    }    
+    
 }

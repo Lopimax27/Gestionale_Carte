@@ -1,3 +1,4 @@
+using System.Security.Policy;
 using MySql.Data.MySqlClient;
 
 public class CartaDB : ICartaDB
@@ -7,6 +8,47 @@ public class CartaDB : ICartaDB
     public CartaDB(MySqlConnection conn)
     {
         connection = conn;
+    }
+
+    public bool InserisciCarta(string nomePokemon, Carta.Tipo tipoPokemon, Carta.Rarita raritaCarta, decimal prezzoCarta, bool isReverse, int idEspansione, string urlCarta)
+    {
+        try
+        {
+            string sqlAddCarta = "insert into carta(nome_pokemon, tipo, rarita, prezzo, url_img, is_reverse, id_espansione) values (@nome_pokemon, @tipo, @rarita, @prezzo, @url_img, @is_reverse, @id_espansione)";
+            using var cmdAddCarta = new MySqlCommand(sqlAddCarta, connection);
+            cmdAddCarta.Parameters.AddWithValue("@nome_pokemon", nomePokemon);
+            cmdAddCarta.Parameters.AddWithValue("@tipo", tipoPokemon + 1);
+            cmdAddCarta.Parameters.AddWithValue("@rarita", raritaCarta + 1);
+            cmdAddCarta.Parameters.AddWithValue("@prezzo", prezzoCarta);
+            cmdAddCarta.Parameters.AddWithValue("@url_img", urlCarta);
+            cmdAddCarta.Parameters.AddWithValue("@is_reverse", isReverse);
+            cmdAddCarta.Parameters.AddWithValue("@id_espansione", idEspansione);
+            cmdAddCarta.ExecuteNonQuery();
+            return true;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.ToString());
+            return false;
+        }
+    }
+
+    public bool RimuoviCarta(int id_carta, string nomePokemon, string espansioneCarta)
+    {
+        try
+        {
+            string sql = "delete from carta where carta.id_carta = @carta_id;";
+            using var cmd2 = new MySqlCommand(sql, connection);
+            cmd2.Parameters.AddWithValue("@carta_id", id_carta);
+            cmd2.ExecuteNonQuery();
+            Console.WriteLine($"Carta {nomePokemon}, {espansioneCarta} elimnata.");
+            return true;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.ToString());
+            return false;
+        }
     }
 
     public Carta? TrovaCarta(string nome, int espansioneId)

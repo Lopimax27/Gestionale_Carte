@@ -13,6 +13,10 @@ public class Carta
 
     public Rarita RaritaCarta { get; set; }
 
+    public bool IsReverse { get; set; }
+
+    public int IdEspansione { get; set; }
+
     public enum Tipo
     {
         Acqua,
