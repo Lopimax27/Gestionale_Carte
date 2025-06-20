@@ -155,7 +155,7 @@ public class ServiziCarta
         {
             cartaID = rdr.GetInt32("id_carta");
             rdr.Close();
-            sql = "delete from carta where carta.id_carta = @carta_id limit 1";
+            sql = "delete from carta where carta.id_carta = @carta_id;";
             using var cmd2 = new MySqlCommand(sql, u.Connection);
             cmd2.Parameters.AddWithValue("@carta_id", cartaID);
             cmd2.ExecuteNonQuery();
