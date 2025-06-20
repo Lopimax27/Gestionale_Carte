@@ -94,9 +94,11 @@ public class Program
     public static void MenuUtente(Utente utente)
     {
         var cDb = new CollezioneDb(utente.Connection);
+        var aDb = new AlbumDb(utente.Connection);
         var serviziColl = new ServiziCollezione(cDb);
-
-        serviziColl.CreaAlbum(utente.UtenteId);
+        var serviziAlbum = new ServiziAlbum(aDb);
+        //serviziColl.CreaAlbum(utente.UtenteId);
+        serviziAlbum.RimuoviCarta();
     }
 
     public static void MenuAdmin(Utente utente)
