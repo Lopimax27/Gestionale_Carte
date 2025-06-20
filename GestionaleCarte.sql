@@ -25,7 +25,7 @@ prezzo DECIMAL (10,2),
 url_img varchar(255),
 is_reverse BOOL DEFAULT FALSE,
 id_espansione INT,
-FOREIGN KEY (id_espansione) REFERENCES espansione(id_espansione)
+FOREIGN KEY (id_espansione) REFERENCES espansione(id_espansione) ON DELETE CASCADE
 );
 
 CREATE TABLE Espansione(
