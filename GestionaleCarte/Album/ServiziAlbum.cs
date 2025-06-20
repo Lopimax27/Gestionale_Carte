@@ -12,54 +12,6 @@ public class ServiziAlbum
         _albumDb = albumDb;
     }
 
-    public void CreaAlbum(string nomeAlbum)
-    {
-        string query = "INSERT INTO album (nome_album) VALUES (@nomeAlbum)";
-        using var cmd = new MySqlCommand(query, _conn);
-        cmd.Parameters.AddWithValue("@nomeAlbum", nomeAlbum);
-        cmd.ExecuteNonQuery();
-    }
-
-    public void EliminaAlbum(string nomeAlbum)
-    {
-        string queryCerca = "SELECT id_album, nome_album FROM album WHERE nome_album = @nomeAlbum";
-        using var cmdCerca = new MySqlCommand(queryCerca, _conn);
-        cmdCerca.Parameters.AddWithValue("@nomeAlbum", nomeAlbum);
-
-        using var reader = cmdCerca.ExecuteReader();
-        var albumTrovati = new List<int>();
-
-        Console.WriteLine("\nAlbum trovati:");
-        while (reader.Read())
-        {
-            int id = reader.GetInt32("id_album");
-            string nome = reader.GetString("nome_album");
-            Console.WriteLine($"ID Album: {id} | Nome Album: {nome}");
-            albumTrovati.Add(id);
-        }
-
-        if (albumTrovati.Count == 0)
-        {
-            Console.WriteLine("Nessun album trovato.");
-            return;
-        }
-
-        reader.Close();
-
-        Console.WriteLine("\nInserisci l'ID dell'album da eliminare:");
-        if (!int.TryParse(Console.ReadLine(), out int idDaEliminare) || !albumTrovati.Contains(idDaEliminare))
-        {
-            Console.WriteLine("ID non valido.");
-            return;
-        }
-
-        string queryElimina = "DELETE FROM album WHERE id_album = @idAlbum";
-        using var cmdElimina = new MySqlCommand(queryElimina, _conn);
-        cmdElimina.Parameters.AddWithValue("@idAlbum", idDaEliminare);
-
-        int righe = cmdElimina.ExecuteNonQuery();
-        Console.WriteLine(righe > 0 ? "Album eliminato con successo." : "Errore durante l'eliminazione.");
-    }
 
     public void MostraAlbum(int idUtente)
     {
@@ -88,5 +40,86 @@ public class ServiziAlbum
             Console.WriteLine($"ID Album: {id} | Nome Album: {nome}");
         }
     }    
-    
+
+    public void AggiungiCarta()
+    {
+        try
+        {
+            Console.Write("Inserisci l'ID dell'album su cui vuoi operare: ");
+            if (!int.TryParse(Console.ReadLine(), out int idAlbum))
+            {
+                Console.WriteLine("ID album non valido.");
+                return;
+            }
+
+            Console.Write("Inserisci il nome della carta Pokémon che vuoi aggiungere al tuo Album: ");
+            string nomePokemon = Console.ReadLine()?.Trim();
+            if (string.IsNullOrWhiteSpace(nomePokemon))
+            {
+                Console.WriteLine("Il nome del Pokémon non può essere vuoto.");
+                return;
+            }
+
+            Console.Write("Inserisci l'ID dell'espansione: ");
+            if (!int.TryParse(Console.ReadLine(), out int idEspansione))
+            {
+                Console.WriteLine("ID espansione non valido.");
+                return;
+            }
+
+            var idCarta = _albumDb.TrovaIdCarta(nomePokemon, idEspansione);
+
+            bool cartaAggiunta = _albumDb.AggiungiCarta(idAlbum, idCarta.Value, nomePokemon, idEspansione);
+
+        }
+        catch (MySqlException ex)
+        {
+            Console.WriteLine("Errore di connessione al database: " + ex.Message);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("Si è verificato un errore: " + ex.Message);
+        }
+    }
+
+    public void RimuoviCarta()
+    {
+        try
+        {
+            Console.Write("Inserisci l'ID dell'album su cui vuoi operare: ");
+            if (!int.TryParse(Console.ReadLine(), out int idAlbum))
+            {
+                Console.WriteLine("ID album non valido.");
+                return;
+            }
+
+            Console.Write("Inserisci il nome della carta Pokémon che vuoi rimuovere dall'Album: ");
+            string nomePokemon = Console.ReadLine()?.Trim();
+            if (string.IsNullOrWhiteSpace(nomePokemon))
+            {
+                Console.WriteLine("Il nome del Pokémon non può essere vuoto.");
+                return;
+            }
+
+            Console.Write("Inserisci l'ID dell'espansione: ");
+            if (!int.TryParse(Console.ReadLine(), out int idEspansione))
+            {
+                Console.WriteLine("ID espansione non valido.");
+                return;
+            }
+
+            var idCarta = _albumDb.TrovaIdCarta(nomePokemon, idEspansione);
+
+            bool cartaRimossa = _albumDb.RimuoviCarta(idAlbum, idCarta.Value, nomePokemon, idEspansione);
+        }
+        catch (MySqlException ex)
+        {
+            Console.WriteLine("Errore di connessione al database: " + ex.Message);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("Si è verificato un errore: " + ex.Message);
+        }
+
+    }
 }

@@ -11,8 +11,8 @@ public class EspansioneDb : IEspansioneDb
 
     public Espansione? TrovaPerNome(string nomeEspansione)
     {
-        using var cmd = new MySqlCommand("SELECT * FROM Espansione WHERE nome_espansione = @nome ", _conn);
-        cmd.Parameters.AddWithValue("@nome", nomeEspansione);
+        using var cmd = new MySqlCommand("SELECT * FROM Espansione WHERE nome_espansione = @nomeEspansione", _conn);
+        cmd.Parameters.AddWithValue("@nomeEspansione", nomeEspansione);
         using var reader = cmd.ExecuteReader();
         if (reader.Read())
         {
