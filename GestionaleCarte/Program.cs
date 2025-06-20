@@ -89,7 +89,8 @@ public class Program
     {
         var eDb = new EspansioneDb(utente.Connection);
         var serviziEsp = new ServiziEspansione(eDb);
-        var serviziCarta = new ServiziCarta(utente.Connection, eDb);
+        var cDb = new CartaDB(utente.Connection);
+        var serviziCarta = new ServiziCarta(cDb,eDb);
 
         serviziEsp.CreaEspansioneDb(utente);
 

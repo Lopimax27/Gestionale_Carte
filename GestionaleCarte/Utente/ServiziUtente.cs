@@ -4,12 +4,10 @@ using MySql.Data.MySqlClient;
 public class ServiziUtente
 {
     private readonly IUtenteDb _utenteDb;
-    private readonly MySqlConnection _conn;
 
-    public ServiziUtente(IUtenteDb utenteDb, MySqlConnection conn)
+    public ServiziUtente(IUtenteDb utenteDb)
     {
         _utenteDb = utenteDb;
-        _conn = conn;
     }
 
     public bool Registra(string username, string email, string password)
@@ -28,7 +26,7 @@ public class ServiziUtente
             return null;
 
         string sqlPassword = "SELECT password_hash FROM utente WHERE id_utente = @utenteId";
-        using var cmd = new MySqlCommand(sqlPassword, _conn);
+        using var cmd = new MySqlCommand(sqlPassword, utente.Connection);
         cmd.Parameters.AddWithValue("@utenteId", utente.UtenteId);
 
         using var rdr = cmd.ExecuteReader();

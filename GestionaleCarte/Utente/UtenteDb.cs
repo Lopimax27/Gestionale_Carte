@@ -51,7 +51,7 @@ public class UtenteDb : IUtenteDb
         {
             int id = rdr.GetInt32("id_utente");
             bool isAdmin = rdr.GetBoolean("is_admin");
-            return new Utente(id, isAdmin);
+            return new Utente(id, isAdmin,conn);
         }
 
         return null;
