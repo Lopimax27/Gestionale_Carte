@@ -1,5 +1,6 @@
 using MySql.Data.MySqlClient;
 
+
 public class AlbumDb : IAlbumDb
 {
     private readonly MySqlConnection _conn;
@@ -36,7 +37,7 @@ public class AlbumDb : IAlbumDb
             Console.WriteLine($"ID Album: {id} | Nome Album: {nome}");
         }
     }
-    public bool AggiungiCarta(int idAlbum, int idCarta, string nomePokemon, int idEspansione)
+    public bool AggiungiCarta(int idAlbum, int idCarta, string nomePokemon, string nomeEspansione,bool isObtained, bool isWanted)
     {
         try
         {
@@ -53,14 +54,16 @@ public class AlbumDb : IAlbumDb
                 case "1":
                     try
                     {
-                        string insertQuery = "INSERT INTO Album_Carta (id_album, id_carta, is_obtained, is_wanted) VALUES (@id_album, @id_carta, TRUE, FALSE)";
+                        string insertQuery = "INSERT INTO Album_Carta (id_album, id_carta, is_obtained, is_wanted) VALUES (@id_album, @id_carta, @isObtained, @isWanted)";
                         using (var cmd = new MySqlCommand(insertQuery, _conn))
                         {
                             cmd.Parameters.AddWithValue("@id_album", idAlbum);
                             cmd.Parameters.AddWithValue("@id_carta", idCarta);
+                            cmd.Parameters.AddWithValue("@isObtained", isObtained);
+                            cmd.Parameters.AddWithValue("@isWanted", isWanted);
                             cmd.ExecuteNonQuery();
                         }
-                        Console.WriteLine($"Carta aggiunta all'Album:\nNome = {nomePokemon}\nID Espansione = {idEspansione}");
+                        Console.WriteLine($"Carta aggiunta all'Album:\nNome = {nomePokemon}\nNome Espansione = {nomeEspansione}");
                     }
                     catch (Exception ex)
                     {
@@ -103,7 +106,7 @@ public class AlbumDb : IAlbumDb
         }
     }
 
-    public bool RimuoviCarta(int idAlbum, int idCarta, string nomePokemon, int idEspansione)
+    public bool RimuoviCarta(int idAlbum, int idCarta, string nomePokemon, string nomeEspansione)
     {
         // Conferma utente
         Console.WriteLine("Vuoi rimuovere la carta dall'album?");
@@ -123,7 +126,7 @@ public class AlbumDb : IAlbumDb
                         cmd.Parameters.AddWithValue("@id_carta", idCarta);
                         cmd.ExecuteNonQuery();
                     }
-                    Console.WriteLine($"Carta rimossa dall'Album:\nNome = {nomePokemon}\nID Espansione = {idEspansione}");
+                    Console.WriteLine($"Carta rimossa dall'Album:\nNome = {nomePokemon}\nNome Espansione = {nomeEspansione}");
                     return true;
                 }
                 catch (Exception ex)
@@ -160,6 +163,62 @@ public class AlbumDb : IAlbumDb
             Console.WriteLine("Nessuna carta trovata.");
         }
         return idCarta;
+
+    }
+
+    public List<Carta> ListaCarte(int idAlbum)
+    {
+        List<Carta> listacarte = new List<Carta>();
+
+        string query = @"SELECT
+                        c.nome_pokemon,
+                        c.tipo,
+                        c.rarita,
+                        c.prezzo,
+                        c.is_reverse,
+                        ac.is_obtained,
+                        ac.is_wanted
+                        FROM album_carta ac
+                        JOIN carta c ON ac.id_carta = c.id_carta
+                        WHERE ac.id_album = @idAlbum";
+
+        try
+        {
+            using var cmdVisualCarte = new MySqlCommand(query, _conn);
+            cmdVisualCarte.Parameters.AddWithValue("@idAlbum", idAlbum);
+
+            using var rdrVisual = cmdVisualCarte.ExecuteReader();
+            if (rdrVisual.HasRows)
+            {
+                while (rdrVisual.Read())
+                {
+
+                    Carta carta = new Carta
+                    {
+                        NomePokemon = rdrVisual.GetString("nome_pokemon"),
+                        TipoCarta = (Carta.Tipo)Enum.Parse(typeof(Carta.Tipo), rdrVisual.GetString("tipo")),
+                        RaritaCarta = (Carta.Rarita)Enum.Parse(typeof(Carta.Rarita), rdrVisual.GetString("rarita").Replace(" ","")),
+                        Prezzo = rdrVisual.GetDecimal("prezzo"),
+                        IsReverse = rdrVisual.GetBoolean("is_reverse"),
+                        IsObtained = rdrVisual.GetBoolean("is_obtained"),
+                        IsWanted = rdrVisual.GetBoolean("is_wanted"),
+                    };
+
+                    listacarte.Add(carta);
+                }
+                return listacarte;
+            }
+            else
+            {
+                Console.WriteLine("Carte non trovate, Album vuoto");
+                return listacarte;
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("Errore durante la visualizzazione delle carte" + ex.Message);
+            return listacarte;
+        }
 
     }
 }

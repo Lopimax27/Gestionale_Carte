@@ -1,5 +1,6 @@
 using System;
 using MySql.Data.MySqlClient;
+using Org.BouncyCastle.Crypto.Parameters;
 
 public class Carta
 {
@@ -14,6 +15,10 @@ public class Carta
     public Rarita RaritaCarta { get; set; }
 
     public bool IsReverse { get; set; }
+
+    public bool IsWanted{ get; set; }
+
+    public bool IsObtained{ get; set; }
 
     public int IdEspansione { get; set; }
 
@@ -35,12 +40,16 @@ public class Carta
     public enum Rarita
     {
         Comune,
-        Non_Comune,
+        NonComune,
         Rara,
-        Rara_Holo,
-        Ultra_Rara,
-        Rara_Segreta
+        RaraHolo,
+        UltraRara,
+        RaraSegreta
     }
 
+    public override string ToString()
+    {
+        return $"Nome: {NomePokemon} | Tipo: {TipoCarta} | Rarità: {RaritaCarta} | Prezzo: €{Prezzo} | Reverse: {(IsReverse ? "✔" : "✘")} | Posseduta: {(IsObtained ? "✔" : "✘")} | Desiderata: {(IsWanted ? "✔" : "✘")}";
 
+    }
 }
