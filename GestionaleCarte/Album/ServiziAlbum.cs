@@ -2,21 +2,37 @@ using MySql.Data.MySqlClient;
 
 public class ServiziAlbum
 {
-    public readonly IAlbumDb _albumDb;
+    private readonly IAlbumDb _albumDb;
+    private readonly IEspansioneDb _espansioneDb;
+    private readonly ICollezioneDb _collezioneDb;
 
-    public ServiziAlbum(IAlbumDb albumDb)
+
+    public ServiziAlbum(IAlbumDb albumDb, IEspansioneDb espansioneDb, ICollezioneDb collezioneDb)
     {
         _albumDb = albumDb;
+        _espansioneDb = espansioneDb;
+        _collezioneDb = collezioneDb;
     }
 
-    public void AggiungiCarta()
+    public void AggiungiCarta(int utenteId)
     {
         try
         {
-            Console.Write("Inserisci l'ID dell'album su cui vuoi operare: ");
-            if (!int.TryParse(Console.ReadLine(), out int idAlbum))
+            var collezione = _collezioneDb.TrovaPerUtenteId(utenteId);
+
+            Console.Write("Inserisci il nome dell'album in cui vuoi aggiungere una carta: ");
+            string nomeAlbum = Console.ReadLine().Trim();
+            if (string.IsNullOrWhiteSpace(nomeAlbum))
             {
-                Console.WriteLine("ID album non valido.");
+                Console.WriteLine("Il nome dell'album non può essere vuoto. Riprova");
+                return;
+            }
+
+            var album = _collezioneDb.TrovaPerNomeCollezioneId(collezione.Id, nomeAlbum);
+
+            if (album == null)
+            {
+                Console.WriteLine("Album non trovato");
                 return;
             }
 
@@ -24,20 +40,29 @@ public class ServiziAlbum
             string nomePokemon = Console.ReadLine()?.Trim();
             if (string.IsNullOrWhiteSpace(nomePokemon))
             {
-                Console.WriteLine("Il nome del Pokémon non può essere vuoto.");
+                Console.WriteLine("Il nome del Pokémon non può essere vuoto. Riprova");
                 return;
             }
 
-            Console.Write("Inserisci l'ID dell'espansione: ");
-            if (!int.TryParse(Console.ReadLine(), out int idEspansione))
+            Console.Write("Inserisci il nome dell'espansione: ");
+            string nomeEspansione = Console.ReadLine().Trim();
+            if (string.IsNullOrWhiteSpace(nomeEspansione))
             {
-                Console.WriteLine("ID espansione non valido.");
+                Console.WriteLine("Il nome del Pokémon non può essere vuoto. Riprova");
                 return;
             }
 
-            var idCarta = _albumDb.TrovaIdCarta(nomePokemon, idEspansione);
+            var espansione = _espansioneDb.TrovaPerNome(nomeEspansione);
 
-            bool cartaAggiunta = _albumDb.AggiungiCarta(idAlbum, idCarta.Value, nomePokemon, idEspansione);
+            if (espansione == null)
+            {
+                Console.WriteLine("Espansione non trovata");
+                return;
+            }
+
+            var idCarta = _albumDb.TrovaIdCarta(nomePokemon, espansione.Id);
+
+            bool cartaAggiunta = _albumDb.AggiungiCarta(album.Id, idCarta.Value, nomePokemon, espansione.Id);
 
         }
         catch (MySqlException ex)
@@ -50,14 +75,25 @@ public class ServiziAlbum
         }
     }
 
-    public void RimuoviCarta()
+    public void RimuoviCarta(int utenteId)
     {
         try
         {
-            Console.Write("Inserisci l'ID dell'album su cui vuoi operare: ");
-            if (!int.TryParse(Console.ReadLine(), out int idAlbum))
+            var collezione = _collezioneDb.TrovaPerUtenteId(utenteId);
+
+            Console.Write("Inserisci il nome dell'album in cui vuoi aggiungere una carta: ");
+            string nomeAlbum = Console.ReadLine().Trim();
+            if (string.IsNullOrWhiteSpace(nomeAlbum))
             {
-                Console.WriteLine("ID album non valido.");
+                Console.WriteLine("Il nome dell'album non può essere vuoto. Riprova");
+                return;
+            }
+
+            var album = _collezioneDb.TrovaPerNomeCollezioneId(collezione.Id, nomeAlbum);
+
+            if (album == null)
+            {
+                Console.WriteLine("Album non trovato");
                 return;
             }
 
@@ -69,16 +105,26 @@ public class ServiziAlbum
                 return;
             }
 
-            Console.Write("Inserisci l'ID dell'espansione: ");
-            if (!int.TryParse(Console.ReadLine(), out int idEspansione))
+            Console.Write("Inserisci il nome dell'espansione: ");
+            string nomeEspansione = Console.ReadLine().Trim();
+            if (string.IsNullOrWhiteSpace(nomeEspansione))
             {
-                Console.WriteLine("ID espansione non valido.");
+                Console.WriteLine("Il nome del Pokémon non può essere vuoto. Riprova");
                 return;
             }
 
-            var idCarta = _albumDb.TrovaIdCarta(nomePokemon, idEspansione);
+            var espansione = _espansioneDb.TrovaPerNome(nomeEspansione);
 
-            bool cartaRimossa = _albumDb.RimuoviCarta(idAlbum, idCarta.Value, nomePokemon, idEspansione);
+            if (espansione == null)
+            {
+                Console.WriteLine("Espansione non trovata");
+                return;
+            }
+
+            var idCarta = _albumDb.TrovaIdCarta(nomePokemon, espansione.Id);
+
+            bool cartaRimossa = _albumDb.RimuoviCarta(album.Id, idCarta.Value, nomePokemon, espansione.Id);
+            
         }
         catch (MySqlException ex)
         {

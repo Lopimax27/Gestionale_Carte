@@ -1,9 +1,7 @@
-using MySql.Data.MySqlClient;
 using static Carta; // Per gli enumeratori
 
 public class ServiziCarta
 {
-    private readonly MySqlConnection _conn;
 
     public readonly ICartaDB _cartaDB;
     private EspansioneDb _espansioneDb;

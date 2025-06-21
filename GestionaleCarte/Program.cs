@@ -93,12 +93,13 @@ public class Program
 
     public static void MenuUtente(Utente utente)
     {
+        var eDb = new EspansioneDb(utente.Connection);
         var cDb = new CollezioneDb(utente.Connection);
         var aDb = new AlbumDb(utente.Connection);
         var serviziColl = new ServiziCollezione(cDb);
-        var serviziAlbum = new ServiziAlbum(aDb);
+        var serviziAlbum = new ServiziAlbum(aDb,eDb,cDb);
         //serviziColl.CreaAlbum(utente.UtenteId);
-        serviziAlbum.RimuoviCarta();
+        serviziAlbum.RimuoviCarta(utente.UtenteId);
     }
 
     public static void MenuAdmin(Utente utente)
