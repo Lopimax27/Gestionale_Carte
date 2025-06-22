@@ -1,10 +1,4 @@
-﻿using System;
-using System.Data;
-
-using MySql.Data;
-using MySql.Data.MySqlClient;
-
-using BCrypt.Net;
+﻿using MySql.Data.MySqlClient;
 
 public class Program
 {

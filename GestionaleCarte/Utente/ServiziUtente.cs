@@ -79,4 +79,26 @@ public class ServiziUtente
 
         return utente;
     }
+
+    public void StampaUtenti(Utente utente)
+    {
+        if (!utente.IsAdmin)
+        {
+            Console.WriteLine($"Solo gli admin possono visualizzare gli utenti!");
+            return;
+        }
+
+        List<Utente> listaUtenti = _utenteDb.TuttiUtenti();
+
+        if (listaUtenti == null)
+        {
+            Console.WriteLine("Non ci sono utenti nel database o errore di connessione!");
+            return;
+        }
+
+        foreach (Utente u in listaUtenti)
+        {
+            Console.WriteLine(u);
+        }
+    }
 }

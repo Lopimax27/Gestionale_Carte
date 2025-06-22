@@ -20,6 +20,12 @@ public class ServiziAlbum
         {
             var collezione = _collezioneDb.TrovaPerUtenteId(utenteId);
 
+            if (collezione == null)
+            {
+                Console.WriteLine("Collezione non trovata, assicurati di creare il tuo primo album, per creare la tua collezione");
+                return;
+            }
+
             Console.Write("Inserisci il nome dell'album in cui vuoi aggiungere una carta: ");
             string nomeAlbum = Console.ReadLine().Trim();
             if (string.IsNullOrWhiteSpace(nomeAlbum))
@@ -98,6 +104,12 @@ public class ServiziAlbum
         try
         {
             var collezione = _collezioneDb.TrovaPerUtenteId(utenteId);
+
+            if (collezione == null)
+            {
+                Console.WriteLine("Collezione non trovata, assicurati di creare il tuo primo album, per creare la tua collezione");
+                return;
+            }
 
             Console.Write("Inserisci il nome dell'album in cui vuoi aggiungere una carta: ");
             string nomeAlbum = Console.ReadLine().Trim();

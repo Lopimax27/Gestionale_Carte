@@ -4,4 +4,5 @@ public interface IUtenteDb
     bool Inserisci(string username, string email, string passwordHash);
     Utente? TrovaPerUsername(string username);
     string? TrovaPasswordHash(int utenteId);
+    List<Utente>? TuttiUtenti();
 }

@@ -43,7 +43,7 @@ public class Menu
                     Console.WriteLine("Login effettuato, Benvenuto!");
                     if (utente.IsAdmin)
                     {
-                        MenuAdmin(utente);
+                        MenuAdmin(utente,serviziUtente);
                     }
                     else
                     {
@@ -116,7 +116,7 @@ public class Menu
         }
     }
 
-    public void MenuAdmin(Utente utente)
+    public void MenuAdmin(Utente utente,ServiziUtente serviziUtente)
     {
         var eDb = new EspansioneDb(utente.Connection);
         var serviziEsp = new ServiziEspansione(eDb);
@@ -129,7 +129,7 @@ public class Menu
             Console.WriteLine("\n=== MENU AMMINISTRATORE ===");
             Console.WriteLine("[1] Gestisci Espansioni");
             Console.WriteLine("[2] Gestisci Database Carte");
-            Console.WriteLine("[3] Gestisci gli Utenti");
+            Console.WriteLine("[3] Visualizza Tutti Gli Utenti");
             Console.WriteLine("[0] Logout");
             Console.Write("Scelta: ");
 
@@ -148,7 +148,7 @@ public class Menu
                     MenuCarteAdmin(utente, serviziCarta);
                     break;
                 case 3:
-
+                    serviziUtente.StampaUtenti(utente);
                     break;
                 case 0:
                     Console.WriteLine("Logout effettuato!");
