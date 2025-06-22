@@ -78,6 +78,7 @@ public class Menu
             Console.WriteLine("[2] Aggiungi carte ad un album");
             Console.WriteLine("[3] Rimuovi carte da un album");
             Console.WriteLine("[4] Visualizza Carte di un album");
+            Console.WriteLine("[5] Calcola il valore di un album");
             Console.WriteLine("[0] Logout");
             Console.Write("Scelta: ");
 
@@ -100,6 +101,9 @@ public class Menu
                     break;
                 case 4:
                     serviziAlbum.VisualizzaCarte(utente.UtenteId);
+                    break;
+                case 5:
+                    serviziAlbum.ValoreAlbum(utente.UtenteId);
                     break;
                 case 0:
                     Console.WriteLine("Logout effettuato!");

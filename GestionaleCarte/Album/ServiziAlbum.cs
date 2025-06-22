@@ -75,12 +75,12 @@ public class ServiziAlbum
                 isWanted = false;
             }
             else
-            { 
+            {
                 isObtained = false;
                 isWanted = true;
             }
 
-            bool cartaAggiunta = _albumDb.AggiungiCarta(album.Id, idCarta.Value, nomePokemon, espansione.Nome,isObtained,isWanted);
+            bool cartaAggiunta = _albumDb.AggiungiCarta(album.Id, idCarta.Value, nomePokemon, espansione.Nome, isObtained, isWanted);
 
         }
         catch (MySqlException ex)
@@ -160,6 +160,12 @@ public class ServiziAlbum
         {
             var collezione = _collezioneDb.TrovaPerUtenteId(utenteId);
 
+            if (collezione == null)
+            {
+                Console.WriteLine("Collezione non trovata, assicurati di creare il tuo primo album, per creare la tua collezione");
+                return;
+            }
+
             Console.Write("Inserisci il nome dell'album di cui vuoi visualizzare le carte: ");
             string nomeAlbum = Console.ReadLine().Trim();
             if (string.IsNullOrWhiteSpace(nomeAlbum))
@@ -182,6 +188,48 @@ public class ServiziAlbum
             {
                 Console.WriteLine(c);
             }
+
+        }
+        catch (MySqlException ex)
+        {
+            Console.WriteLine("Errore di connessione al database: " + ex.Message);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("Si è verificato un errore: " + ex.Message);
+        }
+    }
+
+    public void ValoreAlbum(int utenteId)
+    {
+        try
+        {
+            var collezione = _collezioneDb.TrovaPerUtenteId(utenteId);
+
+            if (collezione == null)
+            {
+                Console.WriteLine("Collezione non trovata, assicurati di creare il tuo primo album, per creare la tua collezione");
+            }
+
+            Console.Write("Inserisci il nome dell'album di cui vuoi calcolare il valore delle carte: ");
+            string nomeAlbum = Console.ReadLine().Trim();
+            if (string.IsNullOrWhiteSpace(nomeAlbum))
+            {
+                Console.WriteLine("Il nome dell'album non può essere vuoto. Riprova");
+                return;
+            }
+
+            var album = _collezioneDb.TrovaPerNomeCollezioneId(collezione.Id, nomeAlbum);
+
+            if (album == null)
+            {
+                Console.WriteLine("Album non trovato");
+                return;
+            }
+
+            decimal valore = _albumDb.ValoreAlbum(album.Id);
+
+            Console.WriteLine($"Il tuo album {album.Nome} vale {valore} €");
 
         }
         catch (MySqlException ex)

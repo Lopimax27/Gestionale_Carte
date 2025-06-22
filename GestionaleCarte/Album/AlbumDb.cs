@@ -1,6 +1,5 @@
 using MySql.Data.MySqlClient;
 
-
 public class AlbumDb : IAlbumDb
 {
     private readonly MySqlConnection _conn;
@@ -37,7 +36,8 @@ public class AlbumDb : IAlbumDb
             Console.WriteLine($"ID Album: {id} | Nome Album: {nome}");
         }
     }
-    public bool AggiungiCarta(int idAlbum, int idCarta, string nomePokemon, string nomeEspansione,bool isObtained, bool isWanted)
+
+    public bool AggiungiCarta(int idAlbum, int idCarta, string nomePokemon, string nomeEspansione, bool isObtained, bool isWanted)
     {
         try
         {
@@ -197,7 +197,7 @@ public class AlbumDb : IAlbumDb
                     {
                         NomePokemon = rdrVisual.GetString("nome_pokemon"),
                         TipoCarta = (Carta.Tipo)Enum.Parse(typeof(Carta.Tipo), rdrVisual.GetString("tipo")),
-                        RaritaCarta = (Carta.Rarita)Enum.Parse(typeof(Carta.Rarita), rdrVisual.GetString("rarita").Replace(" ","")),
+                        RaritaCarta = (Carta.Rarita)Enum.Parse(typeof(Carta.Rarita), rdrVisual.GetString("rarita").Replace(" ", "")),
                         Prezzo = rdrVisual.GetDecimal("prezzo"),
                         IsReverse = rdrVisual.GetBoolean("is_reverse"),
                         IsObtained = rdrVisual.GetBoolean("is_obtained"),
@@ -220,5 +220,32 @@ public class AlbumDb : IAlbumDb
             return listacarte;
         }
 
+    }
+
+    public decimal ValoreAlbum(int idAlbum)
+    {
+        decimal valore=0;
+        string sqlSum = @"Select sum(prezzo) from carta join album_carta on carta.id_carta=album_carta.id_carta 
+        where album_carta.id_album=@idAlbum
+        group by album_carta.id_album";
+
+        try
+        {
+            using var cmd = new MySqlCommand(sqlSum, _conn);
+            cmd.Parameters.AddWithValue("@idAlbum", idAlbum);
+            var result=cmd.ExecuteScalar();
+
+            if (result != null && result != DBNull.Value)
+            {
+                valore = Convert.ToDecimal(result);
+            }
+
+            return valore;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("Errore durante il calcolo del valore" + ex.Message);
+            return valore;
+        }
     }
 }
