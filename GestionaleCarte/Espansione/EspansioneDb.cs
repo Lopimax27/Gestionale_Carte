@@ -43,12 +43,12 @@ public class EspansioneDb : IEspansioneDb
         }
     }
 
-    public bool RimuoviEspansione(string nomeEspansione)
+    public bool RimuoviEspansione(int idEspansione)
     {
         try
         {
-            using var cmd = new MySqlCommand("Delete Espansione nome_espansione VALUES @nome", _conn);
-            cmd.Parameters.AddWithValue("@nome", nomeEspansione);
+            using var cmd = new MySqlCommand("Delete from espansione where id_espansione=@id ", _conn);
+            cmd.Parameters.AddWithValue("@id", idEspansione);
             cmd.ExecuteNonQuery();
             return true;
         }

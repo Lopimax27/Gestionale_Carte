@@ -24,7 +24,7 @@ public class Program
         }
         catch (Exception ex)
         {
-            Console.WriteLine(ex.ToString());
+            Console.WriteLine("Connessione al database utente "+ ex.Message);
         }
         conn.Close();
     }

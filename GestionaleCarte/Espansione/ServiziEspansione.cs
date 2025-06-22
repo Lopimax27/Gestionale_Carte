@@ -54,4 +54,30 @@ public class ServiziEspansione
             Console.WriteLine("Errore durante la creazione dell'espansione");
         }
     }
+
+    public void RimuoviEspansioneDb(Utente utente)
+    {
+        if (!utente.IsAdmin)
+        {
+            Console.WriteLine("Solo gli admin possono eliminare un espansione!");
+            return;
+        }
+
+        Espansione esp = TrovaEspansione();
+
+        if (esp == null)
+        {
+            return;
+        }
+
+        bool eliminato = _espansioneDb.RimuoviEspansione(esp.Id);
+        if (eliminato)
+        {
+            Console.WriteLine($"Espansione {esp.Nome} eliminata dal database");
+        }
+        else
+        {
+            Console.WriteLine($"Eliminazione fallita, Riprovare");
+        }
+    }
 }
