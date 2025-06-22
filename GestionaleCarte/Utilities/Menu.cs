@@ -128,8 +128,8 @@ public class Menu
         {
             Console.WriteLine("\n=== MENU AMMINISTRATORE ===");
             Console.WriteLine("[1] Gestisci Espansioni");
-            Console.WriteLine("[2] Gestisci Carte Database");
-            Console.WriteLine("[3] ");
+            Console.WriteLine("[2] Gestisci Database Carte");
+            Console.WriteLine("[3] Gestisci gli Utenti");
             Console.WriteLine("[0] Logout");
             Console.Write("Scelta: ");
 
@@ -142,10 +142,10 @@ public class Menu
             switch (sceltaAdmin)
             {
                 case 1:
-
+                    MenuEspansioni(utente, serviziEsp);
                     break;
                 case 2:
-
+                    MenuCarteAdmin(utente, serviziCarta);
                     break;
                 case 3:
 
@@ -153,6 +153,86 @@ public class Menu
                 case 0:
                     Console.WriteLine("Logout effettuato!");
                     exitAdmin = true;
+                    break;
+                default:
+                    Console.WriteLine("Scelta non valida.");
+                    break;
+            }
+        }
+    }
+
+    public void MenuEspansioni(Utente utente, ServiziEspansione serviziEsp)
+    {
+        bool uscita = false;
+        while (!uscita)
+        {
+            Console.WriteLine("\n=== MENU CARTE ===");
+            Console.WriteLine("[1] Aggiungi un espansione al Database");
+            Console.WriteLine("[2] Rimuovi un espansione dal Database");
+            Console.WriteLine("[3] Trova un espansione nel Database");
+            Console.WriteLine("[0] Ritorna al menu Admin");
+            Console.Write("Scelta: ");
+
+            if (!int.TryParse(Console.ReadLine(), out int scelta))
+            {
+                Console.WriteLine("Scelta non valida");
+                continue;
+            }
+
+            switch (scelta)
+            {
+                case 1:
+                    serviziEsp.CreaEspansioneDb(utente);
+                    break;
+                case 2:
+                    serviziEsp.RimuoviEspansioneDb(utente);
+                    break;
+                case 3:
+                    serviziEsp.TrovaEspansione();
+                    break;
+                case 0:
+                    Console.WriteLine("Ritorno al menu admin!");
+                    uscita = true;
+                    break;
+                default:
+                    Console.WriteLine("Scelta non valida.");
+                    break;
+            }
+        }
+    }
+
+    public void MenuCarteAdmin(Utente utente, ServiziCarta serviziCarta)
+    {
+        bool uscita = false;
+        while (!uscita)
+        {
+            Console.WriteLine("\n=== MENU CARTE ===");
+            Console.WriteLine("[1] Aggiungi carta al Database");
+            Console.WriteLine("[2] Rimuovi carta dal Database");
+            Console.WriteLine("[3] Visualizza tutte le carte di un espansione in Database");
+            Console.WriteLine("[0] Ritorna al menu Admin");
+            Console.Write("Scelta: ");
+
+            if (!int.TryParse(Console.ReadLine(), out int scelta))
+            {
+                Console.WriteLine("Scelta non valida");
+                continue;
+            }
+
+            switch (scelta)
+            {
+                case 1:
+                    serviziCarta.AggiungiCartaDB(utente);
+                    break;
+                case 2:
+                    serviziCarta.RimuoviCartaDB(utente);
+                    break;
+                case 3:
+                    serviziCarta.MostraCartePerEspansione();
+                    break;
+                case 0:
+                    Console.WriteLine("Ritorno al menu admin!");
+                    uscita = true;
                     break;
                 default:
                     Console.WriteLine("Scelta non valida.");

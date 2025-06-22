@@ -6,7 +6,7 @@ public class ServiziCarta
     public readonly ICartaDB _cartaDB;
     private EspansioneDb _espansioneDb;
 
-    public ServiziCarta(ICartaDB cartaDB ,EspansioneDb espansioneDb)
+    public ServiziCarta(ICartaDB cartaDB, EspansioneDb espansioneDb)
     {
         _cartaDB = cartaDB;
         _espansioneDb = espansioneDb;

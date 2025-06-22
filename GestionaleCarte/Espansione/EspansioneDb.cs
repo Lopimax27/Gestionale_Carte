@@ -42,4 +42,20 @@ public class EspansioneDb : IEspansioneDb
             return false;
         }
     }
+
+    public bool RimuoviEspansione(string nomeEspansione)
+    {
+        try
+        {
+            using var cmd = new MySqlCommand("Delete Espansione nome_espansione VALUES @nome", _conn);
+            cmd.Parameters.AddWithValue("@nome", nomeEspansione);
+            cmd.ExecuteNonQuery();
+            return true;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.ToString());
+            return false;
+        }
+    }
 }
