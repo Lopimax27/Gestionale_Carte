@@ -10,32 +10,72 @@ public class ServiziUtente
         _utenteDb = utenteDb;
     }
 
-    public bool Registra(string username, string email, string password)
+    public bool Registra()
     {
-        if (_utenteDb.Esiste(username, email))
+        Console.Write("Inserisci nome utente: ");
+        string? username = Console.ReadLine();
+        if (string.IsNullOrEmpty(username))
+        {
+            Console.WriteLine("Il nome utente non può essere vuoto. Riprovare.");
             return false;
+        }
+
+        Console.Write("Inserisci l'email: ");
+        string? email = Console.ReadLine();
+        if (string.IsNullOrEmpty(email) || !ValidazioneInput.IsValidEmail(email))
+        {
+            Console.WriteLine("Email vuota o in formato non valido");
+            return false;
+        }
+
+        Console.Write("Inserisci password: ");
+        string? password = Console.ReadLine();
+        if (string.IsNullOrEmpty(password) || ValidazioneInput.IsValidPassword(password))
+        {
+            Console.WriteLine("Password vuota o non valida (Piu di 8 caratteri, almeno una lettera maiuscola e minuscola e un numero)");
+            return false;
+        }
+
+        if (_utenteDb.Esiste(username, email))
+        {
+            Console.WriteLine("Utente già registrato, riprovare.");
+            return false;
+        }
 
         string passwordHash = BCrypt.Net.BCrypt.HashPassword(password);
         return _utenteDb.Inserisci(username, email, passwordHash);
     }
 
-    public Utente? Login(string username, string password)
+    public Utente? Login()
     {
+        Console.Write("Inserisci nome utente: ");
+        string? username = Console.ReadLine();
+        if (string.IsNullOrEmpty(username))
+        {
+            Console.WriteLine("Il nome utente non può essere vuoto. Riprovare.");
+            return null;
+        }
+
+        Console.Write("Inserisci password: ");
+        string? password = Console.ReadLine();
+        if (string.IsNullOrEmpty(password) || ValidazioneInput.IsValidPassword(password))
+        {
+            Console.WriteLine("Password vuota o non valida (Piu di 8 caratteri, almeno una lettera maiuscola e minuscola e un numero)");
+            return null;
+        }
+
         var utente = _utenteDb.TrovaPerUsername(username);
         if (utente == null)
+        {
             return null;
+        }
 
-        string sqlPassword = "SELECT password_hash FROM utente WHERE id_utente = @utenteId";
-        using var cmd = new MySqlCommand(sqlPassword, utente.Connection);
-        cmd.Parameters.AddWithValue("@utenteId", utente.UtenteId);
+        string? passwordHash = _utenteDb.TrovaPasswordHash(utente.UtenteId);
 
-        using var rdr = cmd.ExecuteReader();
-        if (!rdr.Read())
-            return null;
-
-        string passwordHash = rdr.GetString("password_hash");
         if (!BCrypt.Net.BCrypt.Verify(password, passwordHash))
+        {
             return null;
+        }
 
         return utente;
     }

@@ -16,6 +16,12 @@ id_utente INT UNIQUE,
 FOREIGN KEY (id_utente) REFERENCES Utente(id_utente) ON DELETE CASCADE
 );
 
+CREATE TABLE Espansione(
+id_espansione INT PRIMARY KEY AUTO_INCREMENT,
+nome_espansione varchar(100) UNIQUE NOT NULL,
+anno_espansione DATE
+);
+
 CREATE TABLE Carta(
 id_carta INT PRIMARY KEY AUTO_INCREMENT,
 nome_pokemon varchar(100) NOT NULL,
@@ -26,12 +32,6 @@ url_img varchar(255),
 is_reverse BOOL DEFAULT FALSE,
 id_espansione INT,
 FOREIGN KEY (id_espansione) REFERENCES espansione(id_espansione) ON DELETE CASCADE
-);
-
-CREATE TABLE Espansione(
-id_espansione INT PRIMARY KEY AUTO_INCREMENT,
-nome_espansione varchar(100) UNIQUE NOT NULL,
-anno_espansione DATE
 );
 
 CREATE TABLE Album(
@@ -51,6 +51,9 @@ FOREIGN KEY (id_album) REFERENCES Album(id_album) ON DELETE CASCADE,
 FOREIGN KEY (id_carta) REFERENCES Carta(id_carta) ON DELETE CASCADE
 );
 
+INSERT INTO Espansione (nome_espansione, anno_espansione)
+VALUES ("Southern Island", '2001-07-01');
+
 INSERT INTO Carta (nome_pokemon, tipo, rarita, prezzo, url_img, is_reverse, id_espansione) VALUES
 ('Ivysaur', 'Erba', 'Rara Holo',22.01, 'https://images.pokemontcg.io/si1/5_hires.png', FALSE, 1),
 ('Lickitung', 'Normale', 'Non Comune', 14.89, 'https://images.pokemontcg.io/si1/16_hires.png', FALSE, 1),
@@ -66,6 +69,3 @@ INSERT INTO Carta (nome_pokemon, tipo, rarita, prezzo, url_img, is_reverse, id_e
 ('Togepi', 'Normale', 'Comune', 31.28, 'https://images.pokemontcg.io/si1/4_hires.png', FALSE, 1),
 ('Ledyba', 'Erba', 'Comune', 18.49, 'https://images.pokemontcg.io/si1/7_hires.png', FALSE, 1),
 ('Slowking', 'Psico', 'Rara Holo', 30.60, 'https://images.pokemontcg.io/si1/14_hires.png', FALSE, 1);
-
-INSERT INTO Espansione (nome_espansione, anno_espansione)
-VALUES ("Southern Island", '2001-07-01');
