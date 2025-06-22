@@ -9,34 +9,6 @@ public class AlbumDb : IAlbumDb
         _conn = connection;
     }
 
-    public void MostraAlbum(int idUtente)
-    {
-        string query = @"
-            SELECT a.id_album, a.nome_album
-            FROM collezione c
-            JOIN album a ON c.id_album = a.id_album
-            WHERE c.id_utente = @idUtente";
-
-        using var cmd = new MySqlCommand(query, _conn);
-        cmd.Parameters.AddWithValue("@idUtente", idUtente);
-
-        using var reader = cmd.ExecuteReader();
-
-        if (!reader.HasRows)
-        {
-            Console.WriteLine("Non hai nessun album.");
-            return;
-        }
-
-        Console.WriteLine("Ecco tutti i tuoi album:");
-        while (reader.Read())
-        {
-            int id = reader.GetInt32("id_album");
-            string nome = reader.GetString("nome_album");
-            Console.WriteLine($"ID Album: {id} | Nome Album: {nome}");
-        }
-    }
-
     public bool AggiungiCarta(int idAlbum, int idCarta, string nomePokemon, string nomeEspansione, bool isObtained, bool isWanted)
     {
         try

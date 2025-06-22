@@ -8,7 +8,7 @@ public class CollezioneDb : ICollezioneDb
         connection = conn;
     }
 
-    public bool CreaAlbum(int utenteId,int collezioneId, string nomeAlbum)
+    public bool CreaAlbum(int collezioneId, string nomeAlbum)
     {
         try
         {
@@ -21,18 +21,37 @@ public class CollezioneDb : ICollezioneDb
         }
         catch (Exception ex)
         {
-            Console.WriteLine(ex.ToString());
+            Console.WriteLine(ex.Message);
             return false;
         }
 
     }
 
-    public Album? TrovaPerNomeCollezioneId(int collezioneId,string nomeAlbum)
+    public bool EliminaALbum(int collezioneId, int albumId)
+    {
+        try
+        {
+            string sqlDelete = "Delete from Album where id_album=@albumId and id_collezione=@collezioneId";
+            using var cmd = new MySqlCommand(sqlDelete, connection);
+            cmd.Parameters.AddWithValue("@albumId", albumId);
+            cmd.Parameters.AddWithValue("@collezioneId", collezioneId);
+            cmd.ExecuteNonQuery();
+            return true;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+            return false;
+        }
+        
+    }
+
+    public Album? TrovaPerNomeCollezioneId(int collezioneId, string nomeAlbum)
     {
         string sqlFind = "Select id_album,nome_album from Album where id_collezione=@collezioneId and nome_album=@nomeAlbum";
         using var cmd = new MySqlCommand(sqlFind, connection);
         cmd.Parameters.AddWithValue("@collezioneId", collezioneId);
-        cmd.Parameters.AddWithValue("@nomeAlbum", nomeAlbum );
+        cmd.Parameters.AddWithValue("@nomeAlbum", nomeAlbum);
 
         using var rdr = cmd.ExecuteReader();
 
@@ -44,11 +63,7 @@ public class CollezioneDb : ICollezioneDb
         int albumId = rdr.GetInt32("id_album");
         nomeAlbum = rdr.GetString("nome_album");
 
-        return new Album
-        {
-            Id = albumId,
-            Nome = nomeAlbum
-        };
+        return new Album(albumId, nomeAlbum);
     }
     
     public Collezione? TrovaPerUtenteId(int utenteId)
@@ -84,33 +99,37 @@ public class CollezioneDb : ICollezioneDb
         }
     }
     
-    public void VisualizzaCollezione(MySqlConnection conn, int idCollezione)
+    public List<Album>? VisualizzaCollezione(int idCollezione)
     {
         string query = @"SELECT id_album, nome_album FROM album
                         WHERE id_collezione = @idCollezione";
-
+        List<Album> lista = new List<Album>();
         try
         {
-            MySqlCommand cmdVisualizza = new MySqlCommand(query, conn);
+            using var cmdVisualizza = new MySqlCommand(query, connection);
             cmdVisualizza.Parameters.AddWithValue("@idCollezione", idCollezione);
-            MySqlDataReader rdrVisualizza = cmdVisualizza.ExecuteReader();
+            using var rdrVisualizza = cmdVisualizza.ExecuteReader();
 
             if (rdrVisualizza.HasRows)
             {
-                Console.WriteLine("Ecco tutti gli album nella collezione");
-
                 while (rdrVisualizza.Read())
                 {
                     int id = rdrVisualizza.GetInt32("id_album");
                     string nome = rdrVisualizza.GetString("nome_album");
-
-                    Console.WriteLine($"ID Album: {id} | Nome Album {nome}");
+                    var album = new Album(id, nome);
+                    lista.Add(album);
                 }
+                return lista;
+            }
+            else
+            {
+                return lista;
             }
         }
         catch (Exception ex)
         {
             Console.WriteLine("Errore durante la visualizzazione degli album" + ex.Message);
+            return lista;
         }
     }
 }

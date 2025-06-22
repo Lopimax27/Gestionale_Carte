@@ -274,14 +274,15 @@ public class Menu
     }
 
     public void MenuCollezione(Utente utente, ServiziCollezione serviziColl)
-    { 
-                bool uscita = false;
+    {
+        bool uscita = false;
         while (!uscita)
         {
             Console.WriteLine($"\n=== Collezione {utente.Username.ToUpper()} ===");
             Console.WriteLine("[1] Crea la tua prima collezione");
-            Console.WriteLine("[2] Elimina un Album");
-            Console.WriteLine("[3] Visualizza tutti i tuoi Album");
+            Console.WriteLine("[2] Crea un Album");
+            Console.WriteLine("[3] Elimina un Album");
+            Console.WriteLine("[4] Visualizza tutti i tuoi Album");
             Console.WriteLine("[0] Torna al Menu Utente");
             Console.Write("Scelta: ");
 
@@ -300,7 +301,10 @@ public class Menu
                     serviziColl.CreaAlbum(utente.UtenteId);
                     break;
                 case 3:
-                    
+                    serviziColl.EliminaALbum(utente.UtenteId);
+                    break;
+                case 4:
+                    serviziColl.VisualizzaAlbum(utente.UtenteId);
                     break;
                 case 0:
                     Console.WriteLine("Logout effettuato!");
