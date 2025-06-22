@@ -43,7 +43,7 @@ public class Menu
                     Console.WriteLine("Login effettuato, Benvenuto!");
                     if (utente.IsAdmin)
                     {
-                        MenuAdmin(utente,serviziUtente);
+                        MenuAdmin(utente, serviziUtente);
                     }
                     else
                     {
@@ -68,17 +68,13 @@ public class Menu
         var aDb = new AlbumDb(utente.Connection);
         var serviziColl = new ServiziCollezione(cDb);
         var serviziAlbum = new ServiziAlbum(aDb, eDb, cDb);
-        var serviziCarta = new ServiziCarta(new CartaDB(utente.Connection), eDb);
 
         bool exitUtente = false;
         while (!exitUtente)
         {
             Console.WriteLine("\n=== MENU UTENTE ===");
-            Console.WriteLine("[1] Crea Album");
-            Console.WriteLine("[2] Aggiungi carte ad un album");
-            Console.WriteLine("[3] Rimuovi carte da un album");
-            Console.WriteLine("[4] Visualizza Carte di un album");
-            Console.WriteLine("[5] Calcola il valore di un album");
+            Console.WriteLine("[1] Gestisci Collezione");
+            Console.WriteLine("[2] Gestisci Album");
             Console.WriteLine("[0] Logout");
             Console.Write("Scelta: ");
 
@@ -91,19 +87,10 @@ public class Menu
             switch (sceltaUtente)
             {
                 case 1:
-                    serviziColl.CreaAlbum(utente.UtenteId);
+                    MenuCollezione(utente, serviziColl);
                     break;
                 case 2:
-                    serviziAlbum.AggiungiCarta(utente.UtenteId);
-                    break;
-                case 3:
-                    serviziAlbum.RimuoviCarta(utente.UtenteId);
-                    break;
-                case 4:
-                    serviziAlbum.VisualizzaCarte(utente.UtenteId);
-                    break;
-                case 5:
-                    serviziAlbum.ValoreAlbum(utente.UtenteId);
+                    MenuAlbum(utente, serviziAlbum);
                     break;
                 case 0:
                     Console.WriteLine("Logout effettuato!");
@@ -116,7 +103,7 @@ public class Menu
         }
     }
 
-    public void MenuAdmin(Utente utente,ServiziUtente serviziUtente)
+    public void MenuAdmin(Utente utente, ServiziUtente serviziUtente)
     {
         var eDb = new EspansioneDb(utente.Connection);
         var serviziEsp = new ServiziEspansione(eDb);
@@ -240,4 +227,91 @@ public class Menu
             }
         }
     }
+
+    public void MenuAlbum(Utente utente, ServiziAlbum serviziAlbum)
+    {
+        bool uscita = false;
+        while (!uscita)
+        {
+            Console.WriteLine($"\n=== ALBUM {utente.Username.ToUpper()} ===");
+            Console.WriteLine("[1] Aggiungi carte ad un album");
+            Console.WriteLine("[2] Rimuovi carte da un album");
+            Console.WriteLine("[3] Visualizza Carte di un album");
+            Console.WriteLine("[4] Calcola il valore di un album");
+            Console.WriteLine("[0] Torna al Menu Utente");
+            Console.Write("Scelta: ");
+
+            if (!int.TryParse(Console.ReadLine(), out int sceltaUtente))
+            {
+                Console.WriteLine("Scelta non valida");
+                continue;
+            }
+
+            switch (sceltaUtente)
+            {
+                case 1:
+                    serviziAlbum.AggiungiCarta(utente.UtenteId);
+                    break;
+                case 2:
+                    serviziAlbum.RimuoviCarta(utente.UtenteId);
+                    break;
+                case 3:
+                    serviziAlbum.VisualizzaCarte(utente.UtenteId);
+                    break;
+                case 4:
+                    serviziAlbum.ValoreAlbum(utente.UtenteId);
+                    break;
+                case 0:
+                    Console.WriteLine("Logout effettuato!");
+                    uscita = true;
+                    break;
+                default:
+                    Console.WriteLine("Scelta non valida.");
+                    break;
+            }
+
+        }
+    }
+
+    public void MenuCollezione(Utente utente, ServiziCollezione serviziColl)
+    { 
+                bool uscita = false;
+        while (!uscita)
+        {
+            Console.WriteLine($"\n=== Collezione {utente.Username.ToUpper()} ===");
+            Console.WriteLine("[1] Crea la tua prima collezione");
+            Console.WriteLine("[2] Elimina un Album");
+            Console.WriteLine("[3] Visualizza tutti i tuoi Album");
+            Console.WriteLine("[0] Torna al Menu Utente");
+            Console.Write("Scelta: ");
+
+            if (!int.TryParse(Console.ReadLine(), out int sceltaUtente))
+            {
+                Console.WriteLine("Scelta non valida");
+                continue;
+            }
+
+            switch (sceltaUtente)
+            {
+                case 1:
+                    serviziColl.OttieniCreaCollezione(utente.UtenteId);
+                    break;
+                case 2:
+                    serviziColl.CreaAlbum(utente.UtenteId);
+                    break;
+                case 3:
+                    
+                    break;
+                case 0:
+                    Console.WriteLine("Logout effettuato!");
+                    uscita = true;
+                    break;
+                default:
+                    Console.WriteLine("Scelta non valida.");
+                    break;
+            }
+
+        }
+    }
+
 }
