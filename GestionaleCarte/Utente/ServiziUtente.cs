@@ -30,7 +30,7 @@ public class ServiziUtente
 
         Console.Write("Inserisci password: ");
         string? password = Console.ReadLine();
-        if (string.IsNullOrEmpty(password) || ValidazioneInput.IsValidPassword(password))
+        if (string.IsNullOrEmpty(password) || !ValidazioneInput.IsValidPassword(password))
         {
             Console.WriteLine("Password vuota o non valida (Piu di 8 caratteri, almeno una lettera maiuscola e minuscola e un numero)");
             return false;
@@ -58,9 +58,9 @@ public class ServiziUtente
 
         Console.Write("Inserisci password: ");
         string? password = Console.ReadLine();
-        if (string.IsNullOrEmpty(password) || ValidazioneInput.IsValidPassword(password))
+        if (string.IsNullOrEmpty(password) || !ValidazioneInput.IsValidPassword(password))
         {
-            Console.WriteLine("Password vuota o non valida (Piu di 8 caratteri, almeno una lettera maiuscola e minuscola e un numero)");
+            Console.WriteLine("Password vuota o non valida");
             return null;
         }
 

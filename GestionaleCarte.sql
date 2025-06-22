@@ -55,17 +55,21 @@ INSERT INTO Espansione (nome_espansione, anno_espansione)
 VALUES ("Southern Island", '2001-07-01');
 
 INSERT INTO Carta (nome_pokemon, tipo, rarita, prezzo, url_img, is_reverse, id_espansione) VALUES
-('Ivysaur', 'Erba', 'Rara Holo',22.01, 'https://images.pokemontcg.io/si1/5_hires.png', FALSE, 1),
-('Lickitung', 'Normale', 'Non Comune', 14.89, 'https://images.pokemontcg.io/si1/16_hires.png', FALSE, 1),
-('Exeggutor', 'Erba', 'Non Comune', 16.63, 'https://images.pokemontcg.io/si1/13_hires.png', FALSE, 1),
-('Vileplume', 'Erba', 'Rara Holo', 27.99, 'https://images.pokemontcg.io/si1/17_hires.png', FALSE, 1),
-('Marill', 'Acqua', 'Comune', 25.06, 'https://images.pokemontcg.io/si1/11_hires.png', FALSE, 1),
-('Lapras', 'Acqua', 'Rara Holo', 23.32, 'https://images.pokemontcg.io/si1/12_hires.png', FALSE, 1),
+('Butterfree', 'Erba', 'Comune', 18.64, 'https://images.pokemontcg.io/si1/9_hires.png', FALSE, 1),
+('Exeggutor', 'Erba', 'Comune', 16.63, 'https://images.pokemontcg.io/si1/13_hires.png', FALSE, 1),
+('Ivysaur', 'Erba', 'Comune',22.01, 'https://images.pokemontcg.io/si1/5_hires.png', FALSE, 1),
 ('Jigglypuff', 'Normale', 'Comune', 21.32, 'https://images.pokemontcg.io/si1/8_hires.png', FALSE, 1),
-('Butterfree', 'Erba', 'Non Comune', 18.64, 'https://images.pokemontcg.io/si1/9_hires.png', FALSE, 1),
-('Pidgeot', 'Normale', 'Rara Holo', 19.91, 'https://images.pokemontcg.io/si1/2_hires.png', FALSE, 1),
-('Onix', 'Lotta', 'Comune', 22.28, 'https://images.pokemontcg.io/si1/3_hires.png', FALSE, 1),
+('Lapras', 'Acqua', 'Comune', 23.32, 'https://images.pokemontcg.io/si1/12_hires.png', FALSE, 1),
+('Ledyba', 'Erba', 'Rara Holo', 18.49, 'https://images.pokemontcg.io/si1/7_hires.png', FALSE, 1),
+('Lickitung', 'Normale', 'Comune', 14.89, 'https://images.pokemontcg.io/si1/16_hires.png', FALSE, 1),
+('Marill', 'Acqua', 'Rara Holo', 25.06, 'https://images.pokemontcg.io/si1/11_hires.png', FALSE, 1),
 ('Mew', 'Psico', 'Rara Holo', 145.50, 'https://images.pokemontcg.io/si1/1_hires.png', FALSE, 1),
-('Togepi', 'Normale', 'Comune', 31.28, 'https://images.pokemontcg.io/si1/4_hires.png', FALSE, 1),
-('Ledyba', 'Erba', 'Comune', 18.49, 'https://images.pokemontcg.io/si1/7_hires.png', FALSE, 1),
-('Slowking', 'Psico', 'Rara Holo', 30.60, 'https://images.pokemontcg.io/si1/14_hires.png', FALSE, 1);
+('Onix', 'Lotta', 'Comune', 22.28, 'https://images.pokemontcg.io/si1/3_hires.png', FALSE, 1),
+('Pidgeot', 'Normale', 'Comune', 19.91, 'https://images.pokemontcg.io/si1/2_hires.png', FALSE, 1),
+('Primeape', 'Lotta', 'Comune', 15.23, 'https://images.pokemontcg.io/si1/18_hires.png', FALSE, 1),
+('Raticate', 'Normale', 'Comune', 18.16, 'https://images.pokemontcg.io/si1/6_hires.png', FALSE, 1),
+('Slowking', 'Psico', 'Rara Holo', 33.60, 'https://images.pokemontcg.io/si1/14_hires.png', FALSE, 1),
+('Tentacruel', 'Acqua', 'Comune', 17.17, 'https://images.pokemontcg.io/si1/10_hires.png', FALSE, 1),
+('Togepi', 'Normale', 'Rara Holo', 31.28, 'https://images.pokemontcg.io/si1/4_hires.png', FALSE, 1),
+('Vileplume', 'Erba', 'Rara Holo', 27.99, 'https://images.pokemontcg.io/si1/17_hires.png', FALSE, 1),
+('Wartortle', 'Acqua', 'Comune', 23.99, 'https://images.pokemontcg.io/si1/15_hires.png', FALSE, 1);
