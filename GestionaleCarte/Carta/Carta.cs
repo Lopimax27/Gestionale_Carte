@@ -1,3 +1,4 @@
+using System;
 public class Carta
 {
     public int Id { get; set; }
@@ -12,9 +13,9 @@ public class Carta
 
     public bool IsReverse { get; set; }
 
-    public bool IsWanted{ get; set; }
+    public bool IsWanted { get; set; }
 
-    public bool IsObtained{ get; set; }
+    public bool IsObtained { get; set; }
 
     public int IdEspansione { get; set; }
 
@@ -45,7 +46,7 @@ public class Carta
 
     public override string ToString()
     {
-        return $"Nome: {NomePokemon} | Tipo: {TipoCarta} | Rarità: {RaritaCarta} | Prezzo: €{Prezzo} | Reverse: {(IsReverse ? "✔" : "✘")} | Posseduta: {(IsObtained ? "✔" : "✘")} | Desiderata: {(IsWanted ? "✔" : "✘")}";
+        return $"Nome: {NomePokemon} | Tipo: {TipoCarta} | Rarità: {RaritaCarta} | Prezzo: {Prezzo}€ | Reverse: {(IsReverse ? "✔" : "✘")} | Posseduta: {(IsObtained ? "✔" : "✘")} | Desiderata: {(IsWanted ? "✔" : "✘")}";
 
     }
 }

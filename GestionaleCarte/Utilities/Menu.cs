@@ -61,6 +61,35 @@ public class Menu
         }
     }
 
+    public void DrawDetailedPokeBall()
+    {
+        // Parte superiore rossa
+        Console.ForegroundColor = ConsoleColor.Red;
+        Console.WriteLine("    ████████    ");
+        Console.WriteLine("  ████████████  ");
+        Console.WriteLine(" ██████████████ ");
+        Console.WriteLine("████████████████");
+        
+        // Banda centrale nera con pulsante
+        Console.ForegroundColor = ConsoleColor.Black;
+        Console.WriteLine("████████████████");
+        Console.Write("██████");
+        Console.ForegroundColor = ConsoleColor.White;
+        Console.Write("████");
+        Console.ForegroundColor = ConsoleColor.Black;
+        Console.WriteLine("██████");
+        Console.WriteLine("████████████████");
+        
+        // Parte inferiore bianca
+        Console.ForegroundColor = ConsoleColor.White;
+        Console.WriteLine("████████████████");
+        Console.WriteLine(" ██████████████ ");
+        Console.WriteLine("  ████████████  ");
+        Console.WriteLine("    ████████    ");
+        
+        Console.ResetColor();
+        Console.WriteLine();
+    }
     public void MenuUtente(Utente utente)
     {
         var eDb = new EspansioneDb(utente.Connection);
@@ -262,7 +291,7 @@ public class Menu
                     serviziAlbum.ValoreAlbum(utente.UtenteId);
                     break;
                 case 0:
-                    Console.WriteLine("Logout effettuato!");
+                    Console.WriteLine("Ritorno al menu Utente!");
                     uscita = true;
                     break;
                 default:
@@ -307,7 +336,7 @@ public class Menu
                     serviziColl.VisualizzaAlbum(utente.UtenteId);
                     break;
                 case 0:
-                    Console.WriteLine("Logout effettuato!");
+                    Console.WriteLine("Ritorno al Menu Utente!");
                     uscita = true;
                     break;
                 default:

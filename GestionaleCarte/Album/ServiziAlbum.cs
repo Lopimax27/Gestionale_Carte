@@ -66,6 +66,10 @@ public class ServiziAlbum
             }
 
             var idCarta = _albumDb.TrovaIdCarta(nomePokemon, espansione.Id);
+            if (idCarta == null)
+            {
+                return;
+            }
             bool isObtained, isWanted;
 
             Console.WriteLine("Possiedi già la carta ?\n[1] Si\n[2] No");
@@ -151,7 +155,10 @@ public class ServiziAlbum
             }
 
             var idCarta = _albumDb.TrovaIdCarta(nomePokemon, espansione.Id);
-
+            if (idCarta == null)
+            {
+                return;
+            }
             bool cartaRimossa = _albumDb.RimuoviCarta(album.Id, idCarta.Value, nomePokemon, espansione.Nome);
 
         }
@@ -220,6 +227,7 @@ public class ServiziAlbum
             if (collezione == null)
             {
                 Console.WriteLine("Collezione non trovata, assicurati di creare il tuo primo album, per creare la tua collezione");
+                return;
             }
 
             Console.Write("Inserisci il nome dell'album di cui vuoi calcolare il valore delle carte: ");
@@ -240,7 +248,7 @@ public class ServiziAlbum
 
             decimal valore = _albumDb.ValoreAlbum(album.Id);
 
-            Console.WriteLine($"Il tuo album {album.Nome} vale {valore} €");
+            Console.WriteLine($"Il tuo album {album.Nome} vale {valore}€");
 
         }
         catch (MySqlException ex)

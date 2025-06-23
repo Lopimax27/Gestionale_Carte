@@ -11,6 +11,6 @@ public class Album
 
     public override string ToString()
     {
-        return $"ID Album: {Id} | Nome Album {Nome}";
+        return $"ID Album: {Id} | Nome Album: {Nome}";
     }
 }

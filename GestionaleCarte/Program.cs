@@ -14,6 +14,7 @@ public class Program
         try
         {
             conn.Open();
+            menu.DrawDetailedPokeBall();
             menu.MostraMenuPrincipale(serviziUtente);
         }
         catch (Exception ex)
