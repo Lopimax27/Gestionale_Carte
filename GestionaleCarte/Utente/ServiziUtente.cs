@@ -1,6 +1,3 @@
-using BCrypt.Net;
-using MySql.Data.MySqlClient;
-
 public class ServiziUtente
 {
     private readonly IUtenteDb _utenteDb;

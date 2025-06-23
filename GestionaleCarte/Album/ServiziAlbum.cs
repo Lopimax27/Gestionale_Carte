@@ -1,4 +1,3 @@
-using System.ComponentModel;
 using MySql.Data.MySqlClient;
 
 public class ServiziAlbum

@@ -1,7 +1,3 @@
-using System;
-using MySql.Data.MySqlClient;
-using Org.BouncyCastle.Crypto.Parameters;
-
 public class Carta
 {
     public int Id { get; set; }
