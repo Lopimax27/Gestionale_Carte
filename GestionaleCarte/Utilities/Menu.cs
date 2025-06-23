@@ -153,7 +153,7 @@ public class Menu
         bool uscita = false;
         while (!uscita)
         {
-            Console.WriteLine("\n=== MENU CARTE ===");
+            Console.WriteLine("\n=== MENU ESPANSIONI ===");
             Console.WriteLine("[1] Aggiungi un espansione al Database");
             Console.WriteLine("[2] Rimuovi un espansione dal Database");
             Console.WriteLine("[3] Trova un espansione nel Database");
