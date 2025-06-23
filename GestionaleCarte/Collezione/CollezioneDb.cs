@@ -1,17 +1,35 @@
 using MySql.Data.MySqlClient;
 
+/// <summary>
+/// Implementazione concreta dell'interfaccia ICollezioneDb per la gestione delle collezioni nel database MySQL
+/// </summary>
 public class CollezioneDb : ICollezioneDb
 {
+    /// <summary>
+    /// Connessione al database MySQL
+    /// </summary>
     private readonly MySqlConnection connection;
+
+    /// <summary>
+    /// Costruttore che inizializza la connessione al database
+    /// </summary>
+    /// <param name="conn">Connessione MySQL attiva</param>
     public CollezioneDb(MySqlConnection conn)
     {
         connection = conn;
     }
 
+    /// <summary>
+    /// Crea un nuovo album all'interno di una collezione esistente
+    /// </summary>
+    /// <param name="collezioneId">ID della collezione padre</param>
+    /// <param name="nomeAlbum">Nome dell'album da creare</param>
+    /// <returns>True se la creazione ha successo, False altrimenti</returns>
     public bool CreaAlbum(int collezioneId, string nomeAlbum)
     {
         try
         {
+            // Query di inserimento nuovo album nella collezione
             string sqlInsert = "Insert into Album(nome_album,id_collezione) values (@nomeAlbum,@collezioneId)";
             using var cmd = new MySqlCommand(sqlInsert, connection);
             cmd.Parameters.AddWithValue("@nomeAlbum", nomeAlbum);
@@ -24,9 +42,14 @@ public class CollezioneDb : ICollezioneDb
             Console.WriteLine(ex.Message);
             return false;
         }
-
     }
 
+    /// <summary>
+    /// Elimina un album da una collezione
+    /// </summary>
+    /// <param name="collezioneId">ID della collezione</param>
+    /// <param name="albumId">ID dell'album da eliminare</param>
+    /// <returns>True se l'eliminazione ha successo, False altrimenti</returns>
     public bool EliminaALbum(int collezioneId, int albumId)
     {
         try
@@ -43,9 +66,15 @@ public class CollezioneDb : ICollezioneDb
             Console.WriteLine(ex.Message);
             return false;
         }
-        
+
     }
 
+    /// <summary>
+    /// Trova un album in base al nome e all'ID della collezione
+    /// </summary>
+    /// <param name="collezioneId">ID della collezione</param>
+    /// <param name="nomeAlbum">Nome dell'album da cercare</param>
+    /// <returns>Restituisce l'album trovato o null se non esiste</returns>
     public Album? TrovaPerNomeCollezioneId(int collezioneId, string nomeAlbum)
     {
         string sqlFind = "Select id_album,nome_album from Album where id_collezione=@collezioneId and nome_album=@nomeAlbum";
@@ -65,7 +94,12 @@ public class CollezioneDb : ICollezioneDb
 
         return new Album(albumId, nomeAlbum);
     }
-    
+
+    /// <summary>
+    /// Trova una collezione in base all'ID utente
+    /// </summary>
+    /// <param name="utenteId">ID dell'utente proprietario della collezione</param>
+    /// <returns>Restituisce la collezione trovata o null se non esiste</returns>
     public Collezione? TrovaPerUtenteId(int utenteId)
     {
         string sqlFind = "Select id_collezione,id_utente from Collezione where id_utente=@utenteId";
@@ -81,6 +115,12 @@ public class CollezioneDb : ICollezioneDb
         return null;
     }
 
+    /// <summary>
+    /// Crea una nuova collezione per un utente
+    /// </summary>
+    /// <param name="utenteId">ID dell'utente proprietario della collezione</param>
+    /// <param name="nomeCollezione">Nome della collezione da creare</param>
+    /// <returns>True se la creazione ha successo, False altrimenti</returns>
     public bool CreaCollezione(int utenteId, string nomeCollezione)
     {
         try
@@ -98,7 +138,12 @@ public class CollezioneDb : ICollezioneDb
             return false;
         }
     }
-    
+
+    /// <summary>
+    /// Visualizza gli album di una collezione
+    /// </summary>
+    /// <param name="idCollezione">ID della collezione di cui si vogliono visualizzare gli album</param>
+    /// <returns>Restituisce una lista di album nella collezione, o una lista vuota se non ce ne sono</returns>
     public List<Album>? VisualizzaCollezione(int idCollezione)
     {
         string query = @"SELECT id_album, nome_album FROM album
