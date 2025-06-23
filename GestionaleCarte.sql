@@ -52,7 +52,8 @@ FOREIGN KEY (id_carta) REFERENCES Carta(id_carta) ON DELETE CASCADE
 );
 
 INSERT INTO Espansione (nome_espansione, anno_espansione)
-VALUES ("Southern Island", '2001-07-01');
+VALUES ("Southern Island", '2001-07-01'),
+("Detective Pikachu", '2019-03-29');
 
 INSERT INTO Carta (nome_pokemon, tipo, rarita, prezzo, url_img, is_reverse, id_espansione) VALUES
 ('Butterfree', 'Erba', 'Comune', 18.64, 'https://images.pokemontcg.io/si1/9_hires.png', FALSE, 1),
@@ -72,4 +73,29 @@ INSERT INTO Carta (nome_pokemon, tipo, rarita, prezzo, url_img, is_reverse, id_e
 ('Tentacruel', 'Acqua', 'Comune', 17.17, 'https://images.pokemontcg.io/si1/10_hires.png', FALSE, 1),
 ('Togepi', 'Normale', 'Rara Holo', 31.28, 'https://images.pokemontcg.io/si1/4_hires.png', FALSE, 1),
 ('Vileplume', 'Erba', 'Rara Holo', 27.99, 'https://images.pokemontcg.io/si1/17_hires.png', FALSE, 1),
-('Wartortle', 'Acqua', 'Comune', 23.99, 'https://images.pokemontcg.io/si1/15_hires.png', FALSE, 1);
+('Wartortle', 'Acqua', 'Comune', 23.99, 'https://images.pokemontcg.io/si1/15_hires.png', FALSE, 1),
+('Bulbasaur', 'Erba', 'Comune', 0.30, 'https://limitlesstcg.nyc3.cdn.digitaloceanspaces.com/tpci/DET/DET_001_R_EN_LG.png', FALSE, 2),
+('Lickitung', 'Normale', 'Comune', 0.15, 'https://limitlesstcg.nyc3.cdn.digitaloceanspaces.com/tpci/DET/DET_016_R_EN_LG.png', FALSE, 2),
+('Psyduck', 'Acqua', 'Comune', 0.20, 'https://limitlesstcg.nyc3.cdn.digitaloceanspaces.com/tpci/DET/DET_007_R_EN_LG.png', FALSE, 2),
+('Charmander', 'Fuoco', 'Comune', 0.40, 'https://limitlesstcg.nyc3.cdn.digitaloceanspaces.com/tpci/DET/DET_004_R_EN_LG.png', FALSE, 2),
+('Charizard','Fuoco','Rara Holo', 1.50, 'https://limitlesstcg.nyc3.cdn.digitaloceanspaces.com/tpci/DET/DET_005_R_EN_LG.png',FALSE,2),
+('Morelull', 'Erba', 'Comune', 0.20, 'https://limitlesstcg.nyc3.cdn.digitaloceanspaces.com/tpci/DET/DET_003_R_EN_LG.png', FALSE, 2),
+('Snubbull', 'Folletto', 'Comune', 0.18, 'https://limitlesstcg.nyc3.cdn.digitaloceanspaces.com/tpci/DET/DET_0015_R_EN_LG.png', FALSE, 2),
+('Magikarp', 'Acqua', 'Comune', 0.20, 'https://limitlesstcg.nyc3.cdn.digitaloceanspaces.com/tpci/DET/DET_008_R_EN_LG.png', FALSE, 2),
+('Machamp', 'Lotta', 'Comune', 0.25, 'https://limitlesstcg.nyc3.cdn.digitaloceanspaces.com/tpci/DET/DET_013_R_EN_LG.png', FALSE, 2),
+('Jigglypuff', 'Folletto', 'Comune', 0.20, 'https://limitlesstcg.nyc3.cdn.digitaloceanspaces.com/tpci/DET/DET_014_R_EN_LG.png', FALSE, 2),
+('Mr. Mime', 'Psico', 'Comune', 0.35, 'https://limitlesstcg.nyc3.cdn.digitaloceanspaces.com/tpci/DET/DET_011_R_EN_LG.png', FALSE, 2),
+('Mewtwo', 'Psico', 'Rara Holo', 1.80, 'https://limitlesstcg.nyc3.cdn.digitaloceanspaces.com/tpci/DET/DET_012_R_EN_LG.png', FALSE, 2),
+('Detective Pikachu', 'Elettro', 'Rara Holo', 1.50, 'https://limitlesstcg.nyc3.cdn.digitaloceanspaces.com/tpci/DET/DET_010_R_EN_LG.png', FALSE, 2),
+('Arcanine', 'Fuoco', 'Rara Holo', 0.30, 'https://limitlesstcg.nyc3.cdn.digitaloceanspaces.com/tpci/DET/DET_006_R_EN_LG.png', FALSE, 2),
+('Ditto', 'Normale', 'Comune', 0.60, 'https://limitlesstcg.nyc3.cdn.digitaloceanspaces.com/tpci/DET/DET_017_R_EN_LG.png', FALSE, 2),
+('Greninja', 'Acqua', 'Rara Holo', 1.20, 'https://limitlesstcg.nyc3.cdn.digitaloceanspaces.com/tpci/DET/DET_009_R_EN_LG.png', FALSE, 2),
+('Slaking', 'Normale', 'Comune', 0.40, 'https://limitlesstcg.nyc3.cdn.digitaloceanspaces.com/tpci/DET/DET_018_R_EN_LG.png', FALSE, 2),
+('Ludicolo', 'Erba', 'Comune', 0.25, 'https://limitlesstcg.nyc3.cdn.digitaloceanspaces.com/tpci/DET/DET_002_R_EN_LG.png', FALSE, 2);
+
+
+Select*from Utente;
+Select*from Carta;
+Select*from Album;
+Select*from Espansione;
+Update utente set is_admin=true where id_utente=1;
